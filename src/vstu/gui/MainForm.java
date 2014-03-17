@@ -77,10 +77,14 @@ public class MainForm extends JFrame {
                 for (Element el : links) {
                     //System.out.println(el.attr("abs:href"));
                     String url_l = el.attr("abs:href");
-                    Connection.Response t = Jsoup.connect(url_l).execute();
-                    int code = t.statusCode();
-                    int bytes = t.bodyAsBytes().length;
-                    dtm.addRow(new Object[]{url_l, code, "", bytes, ""});
+                    try {
+                        Connection.Response t = Jsoup.connect(url_l).execute();
+                        int code = t.statusCode();
+                        int bytes = t.bodyAsBytes().length;
+                        dtm.addRow(new Object[]{url_l, code, "", bytes, ""});
+                    } catch (Exception exception) {
+
+                    }
                 }
 
 
