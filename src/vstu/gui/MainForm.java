@@ -14,6 +14,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 /**
  * Created by Lopatin on 17.03.14.
@@ -24,7 +26,12 @@ public class MainForm extends JFrame {
     private JTable tableJTable;
     private JPanel panel;
     private JPanel tablePanel;
-
+    Document doc;
+    Elements links;
+    DefaultTableModel dtm;
+    int code;
+    int bytes;
+    String url_l;
     private static final String TITLE = "VSTU XENU";
 
     public MainForm() {
@@ -49,7 +56,6 @@ public class MainForm extends JFrame {
 
         tableJTable.setModel(dtm);
 
-
         setContentPane(panel);
         pack();
         setTitle(TITLE);
@@ -64,28 +70,18 @@ public class MainForm extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            DefaultTableModel dtm = (DefaultTableModel) tableJTable.getModel();
+            dtm = (DefaultTableModel) tableJTable.getModel();
             dtm.getDataVector().clear();
             String url = urlTextField.getText();
 
             // TODO: Запихнуть в отедльный поток
             try {
-                Connection.Response response = Jsoup.connect(url).execute();
-                Document doc = Jsoup.connect(url).get();
+                    Connection.Response response = Jsoup.connect(url).execute();
+                    doc = Jsoup.connect(url).get();
+                    links = doc.select("a[href]");
+                    ImagesLoad();
 
-                Elements links = doc.select("a[href]");
-                for (Element el : links) {
-                    //System.out.println(el.attr("abs:href"));
-                    String url_l = el.attr("abs:href");
-                    try {
-                        Connection.Response t = Jsoup.connect(url_l).execute();
-                        int code = t.statusCode();
-                        int bytes = t.bodyAsBytes().length;
-                        dtm.addRow(new Object[]{url_l, code, "", bytes, ""});
-                    } catch (Exception exception) {
 
-                    }
-                }
 
 
             } catch (IOException e1) {
@@ -93,6 +89,41 @@ public class MainForm extends JFrame {
             }
 
         }
+        public void ImagesLoad() {
+
+            Thread bacgraund = new Thread(new Runnable() {
+                public void run() {
+                    try {
+                        for (Element el : links) {
+
+                             url_l = el.attr("abs:href");
+                            try {
+                                Connection.Response t = Jsoup.connect(url_l).execute();
+                                code = t.statusCode();
+                                bytes = t.bodyAsBytes().length;
+                                SetRssItems.run();
+
+
+                            } catch (Exception exception) {
+                                exception.printStackTrace();
+
+                            }
+                        }
+
+                        }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }});
+            bacgraund.start();
+        }
+        Runnable SetRssItems = new Runnable() {
+            public void run(){
+                dtm.addRow(new Object[]{url_l, code, "", bytes, ""});
+            }};
+
+
     }
 
     private class FormWindowListener implements WindowListener {
