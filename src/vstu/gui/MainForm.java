@@ -32,6 +32,7 @@ public class MainForm extends JFrame {
     int code;
     int bytes;
     String url_l;
+    String type;
     private static final String TITLE = "VSTU XENU";
 
     public MainForm() {
@@ -74,14 +75,11 @@ public class MainForm extends JFrame {
             dtm.getDataVector().clear();
             String url = urlTextField.getText();
 
-            // TODO: Запихнуть в отедльный поток
             try {
-                    Connection.Response response = Jsoup.connect(url).execute();
-                    doc = Jsoup.connect(url).get();
-                    links = doc.select("a[href]");
-                    ImagesLoad();
-
-
+                //Connection.Response response = Jsoup.connect(url).execute();
+                doc = Jsoup.connect(url).get();
+                links = doc.select("a[href]");
+                ImagesLoad();
 
 
             } catch (IOException e1) {
@@ -89,6 +87,7 @@ public class MainForm extends JFrame {
             }
 
         }
+
         public void ImagesLoad() {
 
             Thread bacgraund = new Thread(new Runnable() {
@@ -96,33 +95,30 @@ public class MainForm extends JFrame {
                     try {
                         for (Element el : links) {
 
-                             url_l = el.attr("abs:href");
+                            url_l = el.attr("abs:href");
+                            Connection.Response t = null;
                             try {
-                                Connection.Response t = Jsoup.connect(url_l).execute();
+                                t = Jsoup.connect(url_l).ignoreContentType(true).ignoreHttpErrors(true).execute();
+
                                 code = t.statusCode();
                                 bytes = t.bodyAsBytes().length;
-                                SetRssItems.run();
+                                type = t.contentType();
 
-
+                                dtm.addRow(new Object[]{url_l, code, type, bytes, ""});
                             } catch (Exception exception) {
                                 exception.printStackTrace();
-
+                                if (t != null) {
+                                    dtm.addRow(new Object[]{url_l, t.statusCode(), "", "", ""});
+                                }
                             }
                         }
-
-                        }
-                    catch (Exception e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
-
-                }});
+                }
+            });
             bacgraund.start();
         }
-        Runnable SetRssItems = new Runnable() {
-            public void run(){
-                dtm.addRow(new Object[]{url_l, code, "", bytes, ""});
-            }};
-
 
     }
 
@@ -130,17 +126,16 @@ public class MainForm extends JFrame {
 
         @Override
         public void windowOpened(WindowEvent e) {
-
+            boolean a = false;
         }
 
         @Override
         public void windowClosing(WindowEvent e) {
-
+            System.exit(0);      // Чтобы приложение после закрытия окна не висело
         }
 
         @Override
         public void windowClosed(WindowEvent e) {
-            System.exit(0);      // Чтобы приложение после закрытия окна не висело
         }
 
         @Override
