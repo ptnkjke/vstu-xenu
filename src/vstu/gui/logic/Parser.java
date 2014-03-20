@@ -29,7 +29,7 @@ public class Parser {
     /**
      * Максимальны йтаймаут для проверки ссылки ms
      */
-    private static final int MAX_TIMEOUT = 500;
+    private static final int MAX_TIMEOUT = 1000;
 
     private static Object sync = new Object();
 
