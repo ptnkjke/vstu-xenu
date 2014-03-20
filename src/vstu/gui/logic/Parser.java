@@ -23,10 +23,6 @@ public class Parser {
      */
     private static List<String> checkedUrlList = new ArrayList<>();
     /**
-     * Очередь ссылок на проверки
-     */
-    private static LinkedBlockingQueue<UrlData> queue = new LinkedBlockingQueue<>(5000);
-    /**
      * Максимальный уровень рекурсии
      */
     private static final int MAX_LEVEL = 3;
@@ -39,41 +35,6 @@ public class Parser {
 
 
     public static void startCheck(final String url) {
-
-        /**
-         * Пять потоков занимаются чеканьем
-         */
-        for (int i = 0; i < 5; i++) {
-
-            Thread thread = new Thread(new Runnable() {
-
-                @Override
-                public void run() {
-                    while (true) {
-                        while (!queue.isEmpty()) {
-                            UrlData ud = null;
-
-                            synchronized (sync) {
-                                try {
-                                    ud = queue.poll(1, TimeUnit.SECONDS);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                                checkUrl(ud.getUrl(), ud.getLvl());
-                            }
-                        }
-
-                        try {
-                            Thread.sleep(300);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            });
-
-            thread.start();
-        }
 
         Thread thread1 = new Thread(new Runnable() {
             @Override
@@ -130,19 +91,21 @@ public class Parser {
 
 
                     synchronized (sync) {
-                        queue.put(new UrlData(_url, lvl + 1));
+                        //queue.put(new UrlData(_url, lvl + 1));
+                        checkUrl(_url, lvl + 1);
                     }
                     System.out.println("exit");
                 }
             }
 
         } catch (java.net.SocketTimeoutException exception) {
-        } catch (Exception e) {
             MainForm.getInstance().getTableModel().addRow(
                     new Object[]{
                             url, "timeout", "", "", "", lvl
                     }
             );
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
 
     }
