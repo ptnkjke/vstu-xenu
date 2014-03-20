@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeUnit;
+import java.util.*;
 
 /**
  * Created by Lopatin on 20.03.14.
@@ -25,7 +25,7 @@ public class Parser {
     /**
      * Очередь ссылок на проверки
      */
-    private static LinkedBlockingQueue<UrlData> queue = new LinkedBlockingQueue<>(5000);
+    private static Queue<UrlData> queue = new LinkedList<>();
     /**
      * Максимальный уровень рекурсии
      */
@@ -33,7 +33,7 @@ public class Parser {
     /**
      * Максимальны йтаймаут для проверки ссылки ms
      */
-    private static final int MAX_TIMEOUT = 500;
+    private static final int MAX_TIMEOUT = 1200;
 
     private static Object sync = new Object();
 
@@ -43,24 +43,22 @@ public class Parser {
         /**
          * Пять потоков занимаются чеканьем
          */
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 10; i++) {
 
             Thread thread = new Thread(new Runnable() {
 
                 @Override
                 public void run() {
                     while (true) {
+
                         while (!queue.isEmpty()) {
                             UrlData ud = null;
 
                             synchronized (sync) {
-                                try {
-                                    ud = queue.poll(1, TimeUnit.SECONDS);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                                checkUrl(ud.getUrl(), ud.getLvl());
+                                ud = queue.poll();
                             }
+
+                            checkUrl(ud.getUrl(), ud.getLvl());
                         }
 
                         try {
@@ -126,23 +124,22 @@ public class Parser {
             if (response.contentType().contains("text/html")) {
                 List<String> urls = getAbsUrls(response.parse());
                 for (String _url : urls) {
-                    System.out.println("enter");
-
 
                     synchronized (sync) {
-                        queue.put(new UrlData(_url, lvl + 1));
+                        queue.add(new UrlData(_url, lvl + 1));
                     }
-                    System.out.println("exit");
+
                 }
             }
 
         } catch (java.net.SocketTimeoutException exception) {
-        } catch (Exception e) {
             MainForm.getInstance().getTableModel().addRow(
                     new Object[]{
                             url, "timeout", "", "", "", lvl
                     }
             );
+        } catch (Exception e) {
+            System.out.println(e.toString());
         }
 
     }
