@@ -1,6 +1,6 @@
 package vstu;
 
-import vstu.gui.MainForm;
+import vstu.gui.forms.MainForm;
 
 /**
  * Created by Lopatin on 17.03.14.
