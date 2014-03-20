@@ -90,10 +90,8 @@ public class Parser {
                     System.out.println("enter");
 
 
-                    synchronized (sync) {
-                        //queue.put(new UrlData(_url, lvl + 1));
-                        checkUrl(_url, lvl + 1);
-                    }
+                    //queue.put(new UrlData(_url, lvl + 1));
+                    checkUrl(_url, lvl + 1);
                     System.out.println("exit");
                 }
             }
