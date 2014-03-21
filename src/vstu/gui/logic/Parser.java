@@ -118,23 +118,26 @@ public class Parser {
     public static List<String> getAbsUrls(Document doc) {
         List<String> ur = new ArrayList<String>();
 
-
-
-        Elements links = doc.select("a[href]");
-        Elements imglink= doc.select("img[src]");
-        Elements csslink= doc.select("link[href]");
-
-
-        for (Element element : links) {
-            ur.add(element.attr("abs:href"));
+            if(MainForm.getInstance().getParserLinks(3)){
+            Elements links = doc.select("a[href]");
+            for (Element element : links) {
+                ur.add(element.attr("abs:href"));
+            }
         }
+
+        if(MainForm.getInstance().getParserLinks(1)){
+        Elements imglink= doc.select("img[src]");
         for (Element element : imglink) {
             ur.add(element.attr("abs:src"));
-        }
-        for (Element element : csslink) {
-            ur.add(element.attr("abs:href"));
+            }
         }
 
+        if(MainForm.getInstance().getParserLinks(2)){
+        Elements csslink= doc.select("link[href]");
+        for (Element element : csslink) {
+            ur.add(element.attr("abs:href"));
+            }
+        }
 
 
         return ur;

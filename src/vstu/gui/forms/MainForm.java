@@ -67,4 +67,21 @@ public class MainForm extends JFrame {
     {
         this.startButton.setText(s);
     }
+
+    public Boolean getParserLinks(int key)
+    {
+        switch (key){
+            case 1:
+               return ImgCheckBox.isSelected();
+            case 2:
+                return CssCheckBox.isSelected();
+
+            case 3:
+                return UrlCheckBox.isSelected();
+        }
+        return false;
+
+    }
+
+
 }
