@@ -59,4 +59,23 @@ public class MainForm extends JFrame {
     public DefaultTableModel getTableModel() {
         return this.tableModel;
     }
+    
+    public void SetButtonTitle(String s)
+    {
+        this.startButton.setText(s);
+    }
+
+    public Boolean getParserLinks(int key)
+    {
+        switch (key){
+            case 1:
+               return ImgCheckBox.isSelected();
+            case 2:
+                return CssCheckBox.isSelected();
+
+            case 3:
+                return UrlCheckBox.isSelected();
+        }
+        return false;
+    
 }
