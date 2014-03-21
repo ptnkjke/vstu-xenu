@@ -21,7 +21,7 @@ public class Parser {
     /**
      * Список проверенных Url
      */
-    private static List<String> checkedUrlList = new ArrayList<>();
+    public static List<String> checkedUrlList = new ArrayList<>();
     /**
      * Очередь ссылок на проверки
      */
@@ -36,7 +36,7 @@ public class Parser {
     private static final int MAX_TIMEOUT = 1200;
 
     private static Object sync = new Object();
-
+    public static Thread thread;
 
     public static void startCheck(final String url) {
 
@@ -45,7 +45,7 @@ public class Parser {
          */
         for (int i = 0; i < 10; i++) {
 
-            Thread thread = new Thread(new Runnable() {
+            thread = new Thread(new Runnable() {
 
                 @Override
                 public void run() {
@@ -146,15 +146,35 @@ public class Parser {
 
 
     public static List<String> getAbsUrls(Document doc) {
-        List<String> ur = new ArrayList<>();
+        List<String> ur = new ArrayList<String>();
 
-        Elements links = doc.select("a[href]");
-
-        for (Element element : links) {
-            ur.add(element.attr("abs:href"));
+            if(MainForm.getInstance().getParserLinks(3)){
+            Elements links = doc.select("a[href]");
+            for (Element element : links) {
+                ur.add(element.attr("abs:href"));
+            }
         }
 
+        if(MainForm.getInstance().getParserLinks(1)){
+        Elements imglink= doc.select("img[src]");
+        for (Element element : imglink) {
+            ur.add(element.attr("abs:src"));
+            }
+        }
+
+        if(MainForm.getInstance().getParserLinks(2)){
+        Elements csslink= doc.select("link[href]");
+        for (Element element : csslink) {
+            ur.add(element.attr("abs:href"));
+            }
+        }
         return ur;
+    }
+    
+    public static void stop()
+    {
+        thread.stop();
+
     }
 
 }
