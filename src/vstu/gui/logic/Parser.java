@@ -21,11 +21,11 @@ public class Parser {
     /**
      * Список проверенных Url
      */
-    public static List<String> checkedUrlList = new ArrayList<>();
+    public static List<String> checkedUrlList = new ArrayList<String>();
     /**
      * Очередь ссылок на проверки
      */
-    private static Queue<UrlData> queue = new LinkedList<>();
+    private static Queue<UrlData> queue = new LinkedList<UrlData>();
     /**
      * Максимальный уровень рекурсии
      */
