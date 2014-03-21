@@ -21,7 +21,9 @@ public class Parser {
     /**
      * Список проверенных Url
      */
-    private static List<String> checkedUrlList = new ArrayList<>();
+    public static List<String> checkedUrlList = new ArrayList<String>();
+   static Thread thread1;
+
     /**
      * Максимальный уровень рекурсии
      */
@@ -36,7 +38,7 @@ public class Parser {
 
     public static void startCheck(final String url) {
 
-        Thread thread1 = new Thread(new Runnable() {
+         thread1 = new Thread(new Runnable() {
             @Override
             public void run() {
                 checkUrl(url, 0);
@@ -44,6 +46,8 @@ public class Parser {
         });
 
         thread1.start();
+
+
     }
 
     /**
@@ -53,6 +57,7 @@ public class Parser {
      * @param lvl Текущая глубина захода
      */
     public static void checkUrl(final String url, final int lvl) {
+
 
         Connection.Response response;
 
@@ -85,6 +90,7 @@ public class Parser {
 
             // Это html-страница
             if (response.contentType().contains("text/html")) {
+
                 List<String> urls = getAbsUrls(response.parse());
                 for (String _url : urls) {
                     System.out.println("enter");
@@ -110,15 +116,33 @@ public class Parser {
 
 
     public static List<String> getAbsUrls(Document doc) {
-        List<String> ur = new ArrayList<>();
+        List<String> ur = new ArrayList<String>();
+
+
 
         Elements links = doc.select("a[href]");
+        Elements imglink= doc.select("img[src]");
+        Elements csslink= doc.select("link[href]");
+
 
         for (Element element : links) {
             ur.add(element.attr("abs:href"));
         }
+        for (Element element : imglink) {
+            ur.add(element.attr("abs:src"));
+        }
+        for (Element element : csslink) {
+            ur.add(element.attr("abs:href"));
+        }
+
+
 
         return ur;
+    }
+    public static void stop()
+    {
+        thread1.stop();
+
     }
 
 }

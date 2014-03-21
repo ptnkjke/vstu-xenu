@@ -16,6 +16,9 @@ public class MainForm extends JFrame {
     private JTable tableJTable;
     private JPanel panel;
     private JPanel tablePanel;
+    private JCheckBox ImgCheckBox;
+    private JCheckBox CssCheckBox;
+    private JCheckBox UrlCheckBox;
     private static final String TITLE = "VSTU XENU";
 
     private static MainForm instance;
@@ -58,5 +61,10 @@ public class MainForm extends JFrame {
 
     public DefaultTableModel getTableModel() {
         return this.tableModel;
+    }
+
+    public void SetButtonTitle(String s)
+    {
+        this.startButton.setText(s);
     }
 }
