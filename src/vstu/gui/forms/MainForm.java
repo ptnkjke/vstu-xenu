@@ -77,5 +77,6 @@ public class MainForm extends JFrame {
                 return UrlCheckBox.isSelected();
         }
         return false;
+    }
     
 }
