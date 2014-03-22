@@ -7,7 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import vstu.gui.data.Options;
+import vstu.gui.data.OptionsProperties;
 
 /**
  * Created by Lopatin on 21.03.14.
@@ -24,7 +24,7 @@ public class MainForm extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Options.load();
+        OptionsProperties.load();
 
         Parent root = FXMLLoader.load(getClass().getResource("MainForm.fxml"));
         stage.setTitle("Java XENU");

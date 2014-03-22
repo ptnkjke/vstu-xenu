@@ -3,19 +3,18 @@ package vstu.gui.forms.main;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.*;
-import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
@@ -23,7 +22,8 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import javafx.util.Callback;
-import vstu.gui.data.Options;
+import vstu.gui.data.OptionsProperties;
+import vstu.gui.forms.options.parserfilter.ParserFilterController;
 import vstu.gui.forms.options.preferences.PreferencesController;
 import vstu.gui.logic.Parser;
 
@@ -62,6 +62,7 @@ public class MainFormController implements ITableWorker {
     private Button startButton;
 
     private boolean isStartPasring = false;
+
     private Parser parser;
 
 
@@ -140,9 +141,68 @@ public class MainFormController implements ITableWorker {
         dialog.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent windowEvent) {
-                Options.save();
+                OptionsProperties.save();
             }
         });
+
+        dialog.show();
+    }
+
+    public void onParserFilterItemAction() {
+        Parent root = null;
+        FXMLLoader fxmlLoader = null;
+        try {
+            fxmlLoader = new FXMLLoader(getClass().getResource("/vstu/gui/forms/options/parserfilter/ParserFilter.fxml"));
+            fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
+
+            root = (Parent) fxmlLoader.load();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        final Stage dialog = new Stage();
+        dialog.initStyle(StageStyle.UTILITY);
+        dialog.setResizable(false);
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.setScene(new Scene(root));
+
+        dialog.setTitle("Preferences");
+
+        final FXMLLoader finalFxmlLoader = fxmlLoader;
+
+        dialog.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent windowEvent) {
+                ((ParserFilterController) finalFxmlLoader.getController()).save();
+            }
+        });
+        final ParserFilterController controller = finalFxmlLoader.getController();
+
+        // Удаление строки по нажатию DELETE
+        controller.getIncludeList().getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.DELETE), new Runnable() {
+            @Override
+            public void run() {
+
+                int num = controller.getIncludeList().getSelectionModel().getSelectedIndex();
+                if (num != -1 && controller.getIncludeList().isFocused()) {
+                    controller.getIncludeList().getItems().remove(num);
+                }
+                num = controller.getExcludeList().getSelectionModel().getSelectedIndex();
+                if (num != -1 && controller.getExcludeList().isFocused()) {
+                    controller.getExcludeList().getItems().remove(num);
+                }
+                num = controller.getSearchList().getSelectionModel().getSelectedIndex();
+                if (num != -1 && controller.getSearchList().isFocused()) {
+                    controller.getSearchList().getItems().remove(num);
+                }
+                num = controller.getTagList().getSelectionModel().getSelectedIndex();
+                if (num != -1 && controller.getTagList().isFocused()) {
+                    controller.getTagList().getItems().remove(num);
+                }
+            }
+        });
+
 
         dialog.show();
     }

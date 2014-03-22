@@ -6,7 +6,7 @@ import java.util.Properties;
 /**
  * Created by Lopatin on 22.03.2014.
  */
-public class Options {
+public class OptionsProperties {
     /**
      * Получение всех ссылок на сайте
      */

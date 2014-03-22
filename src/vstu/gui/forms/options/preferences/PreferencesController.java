@@ -1,13 +1,8 @@
 package vstu.gui.forms.options.preferences;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ContentDisplay;
-import javafx.scene.control.TextField;
-import javafx.scene.input.InputEvent;
-import javafx.scene.input.InputMethodEvent;
-import javafx.scene.input.KeyEvent;
-import vstu.gui.data.Options;
+import javafx.scene.control.*;
+import vstu.gui.data.OptionsProperties;
 
 /**
  * Created by Lopatin on 22.03.2014.
@@ -27,9 +22,10 @@ public class PreferencesController {
     @FXML
     private TextField timeoutTF;
 
+
     @FXML
     private void initialize() {
-        if (Options.urlSelectorEnabled) {
+        if (OptionsProperties.urlSelectorEnabled) {
             urlButton.setText("ON");
             urlButton.setStyle("-fx-background-color: green;-fx-text-fill:white;");
         } else {
@@ -37,7 +33,7 @@ public class PreferencesController {
             urlButton.setStyle("-fx-background-color: red;-fx-text-fill:white;");
         }
 
-        if (Options.imgSelectorEnabled) {
+        if (OptionsProperties.imgSelectorEnabled) {
             imgButton.setText("ON");
             imgButton.setStyle("-fx-background-color: green;-fx-text-fill:white;");
         } else {
@@ -45,7 +41,7 @@ public class PreferencesController {
             imgButton.setStyle("-fx-background-color: red;-fx-text-fill:white;");
         }
 
-        if (Options.cssSelectorEnabled) {
+        if (OptionsProperties.cssSelectorEnabled) {
             cssButton.setText("ON");
             cssButton.setStyle("-fx-background-color: green;-fx-text-fill:white;");
         } else {
@@ -53,7 +49,7 @@ public class PreferencesController {
             cssButton.setStyle("-fx-background-color: red;-fx-text-fill:white;");
         }
 
-        if (Options.jsSelectorEnabled) {
+        if (OptionsProperties.jsSelectorEnabled) {
             jsButton.setText("ON");
             jsButton.setStyle("-fx-background-color: green;-fx-text-fill:white;");
         } else {
@@ -61,7 +57,7 @@ public class PreferencesController {
             jsButton.setStyle("-fx-background-color: red;-fx-text-fill:white;");
         }
 
-        if (Options.excludeRepeatedUrl) {
+        if (OptionsProperties.excludeRepeatedUrl) {
             excludeButton.setText("ON");
             excludeButton.setStyle("-fx-background-color: green;-fx-text-fill:white;");
         } else {
@@ -69,17 +65,17 @@ public class PreferencesController {
             excludeButton.setStyle("-fx-background-color: red;-fx-text-fill:white;");
         }
 
-        timeoutTF.setText(Integer.toString(Options.timeout));
+        timeoutTF.setText(Integer.toString(OptionsProperties.timeout));
     }
 
     public void onUrlButtonAction() {
-        if (Options.urlSelectorEnabled) {
-            Options.urlSelectorEnabled = false;
+        if (OptionsProperties.urlSelectorEnabled) {
+            OptionsProperties.urlSelectorEnabled = false;
             urlButton.setText("OFF");
             urlButton.setStyle("-fx-background-color: red;-fx-text-fill:white;");
             urlButton.setContentDisplay(ContentDisplay.LEFT);
         } else {
-            Options.urlSelectorEnabled = true;
+            OptionsProperties.urlSelectorEnabled = true;
             urlButton.setText("ON");
             urlButton.setStyle("-fx-background-color: green;-fx-text-fill:white;");
             urlButton.setContentDisplay(ContentDisplay.RIGHT);
@@ -87,13 +83,13 @@ public class PreferencesController {
     }
 
     public void onCssButtonAction() {
-        if (Options.cssSelectorEnabled) {
-            Options.cssSelectorEnabled = false;
+        if (OptionsProperties.cssSelectorEnabled) {
+            OptionsProperties.cssSelectorEnabled = false;
             cssButton.setText("OFF");
             cssButton.setStyle("-fx-background-color: red;-fx-text-fill:white;");
             cssButton.setContentDisplay(ContentDisplay.LEFT);
         } else {
-            Options.cssSelectorEnabled = true;
+            OptionsProperties.cssSelectorEnabled = true;
             cssButton.setText("ON");
             cssButton.setStyle("-fx-background-color: green;-fx-text-fill:white;");
             cssButton.setContentDisplay(ContentDisplay.RIGHT);
@@ -101,13 +97,13 @@ public class PreferencesController {
     }
 
     public void onImgButtonAction() {
-        if (Options.imgSelectorEnabled) {
-            Options.imgSelectorEnabled = false;
+        if (OptionsProperties.imgSelectorEnabled) {
+            OptionsProperties.imgSelectorEnabled = false;
             imgButton.setText("OFF");
             imgButton.setStyle("-fx-background-color: red;-fx-text-fill:white;");
             imgButton.setContentDisplay(ContentDisplay.LEFT);
         } else {
-            Options.imgSelectorEnabled = true;
+            OptionsProperties.imgSelectorEnabled = true;
             imgButton.setText("ON");
             imgButton.setStyle("-fx-background-color: green;-fx-text-fill:white;");
             imgButton.setContentDisplay(ContentDisplay.RIGHT);
@@ -115,13 +111,13 @@ public class PreferencesController {
     }
 
     public void onJSButtonAction() {
-        if (Options.jsSelectorEnabled) {
-            Options.jsSelectorEnabled = false;
+        if (OptionsProperties.jsSelectorEnabled) {
+            OptionsProperties.jsSelectorEnabled = false;
             jsButton.setText("OFF");
             jsButton.setStyle("-fx-background-color: red;-fx-text-fill:white;");
             jsButton.setContentDisplay(ContentDisplay.LEFT);
         } else {
-            Options.jsSelectorEnabled = true;
+            OptionsProperties.jsSelectorEnabled = true;
             jsButton.setText("ON");
             jsButton.setStyle("-fx-background-color: green;-fx-text-fill:white;");
             jsButton.setContentDisplay(ContentDisplay.RIGHT);
@@ -129,13 +125,13 @@ public class PreferencesController {
     }
 
     public void onExcludeButtonAction() {
-        if (Options.excludeRepeatedUrl) {
-            Options.excludeRepeatedUrl = false;
+        if (OptionsProperties.excludeRepeatedUrl) {
+            OptionsProperties.excludeRepeatedUrl = false;
             excludeButton.setText("OFF");
             excludeButton.setStyle("-fx-background-color: red;-fx-text-fill:white;");
             excludeButton.setContentDisplay(ContentDisplay.LEFT);
         } else {
-            Options.excludeRepeatedUrl = true;
+            OptionsProperties.excludeRepeatedUrl = true;
             excludeButton.setText("ON");
             excludeButton.setStyle("-fx-background-color: green;-fx-text-fill:white;");
             excludeButton.setContentDisplay(ContentDisplay.RIGHT);
@@ -143,6 +139,6 @@ public class PreferencesController {
     }
 
     public void onTimeoutKeyEvent() {
-        Options.timeout = Integer.parseInt(timeoutTF.getText());
+        OptionsProperties.timeout = Integer.parseInt(timeoutTF.getText());
     }
 }

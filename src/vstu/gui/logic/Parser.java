@@ -5,7 +5,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import vstu.gui.data.Options;
+import vstu.gui.data.OptionsProperties;
 import vstu.gui.forms.main.DataTable;
 import vstu.gui.forms.main.ITableWorker;
 
@@ -100,17 +100,17 @@ public class Parser {
         Connection.Response response;
 
         // Повторно не заходим
-        if (Options.excludeRepeatedUrl && checkedUrlList.contains(url)) {
+        if (OptionsProperties.excludeRepeatedUrl && checkedUrlList.contains(url)) {
             return;
         }
 
         // Глубина уровня
-        if (Options.maxLvl != -1 && lvl > Options.maxLvl) {
+        if (OptionsProperties.maxLvl != -1 && lvl > OptionsProperties.maxLvl) {
             return;
         }
 
         try {
-            response = Jsoup.connect(url).ignoreContentType(true).ignoreHttpErrors(true).timeout(Options.timeout).execute();
+            response = Jsoup.connect(url).ignoreContentType(true).ignoreHttpErrors(true).timeout(OptionsProperties.timeout).execute();
 
             // Добавляем строку в таблицу
             checkedUrlList.add(url);
@@ -149,28 +149,28 @@ public class Parser {
     public List<String> getAbsUrls(Document doc) {
         List<String> ur = new ArrayList<String>();
 
-        if (Options.urlSelectorEnabled) {
+        if (OptionsProperties.urlSelectorEnabled) {
             Elements links = doc.select("a[href]");
             for (Element element : links) {
                 ur.add(element.attr("abs:href"));
             }
         }
 
-        if (Options.imgSelectorEnabled) {
+        if (OptionsProperties.imgSelectorEnabled) {
             Elements imglink = doc.select("img[src]");
             for (Element element : imglink) {
                 ur.add(element.attr("abs:src"));
             }
         }
 
-        if (Options.cssSelectorEnabled) {
+        if (OptionsProperties.cssSelectorEnabled) {
             Elements csslink = doc.select("link[href]");
             for (Element element : csslink) {
                 ur.add(element.attr("abs:href"));
             }
         }
 
-        if(Options.jsSelectorEnabled){
+        if(OptionsProperties.jsSelectorEnabled){
 
         }
 

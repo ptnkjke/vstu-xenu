@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="356.0" prefWidth="600.0" type="BorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vstu.gui.forms.main.MainFormController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="356.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vstu.gui.forms.main.MainFormController">
 <center><TableView fx:id="tableTW" prefHeight="306.0" prefWidth="600.0" BorderPane.alignment="CENTER">
 <columnResizePolicy>
 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -17,7 +17,7 @@
 <children><MenuBar>
   <menus><Menu mnemonicParsing="false" text="Options">
   <items>
-    <MenuItem fx:id="preferencesMenuItem" mnemonicParsing="false" onAction="#onPreferencesMenuItemAction" text="Preferences.." />
+    <MenuItem fx:id="preferencesMenuItem" mnemonicParsing="false" onAction="#onPreferencesMenuItemAction" text="Preferences.." /><MenuItem mnemonicParsing="false" onAction="#onParserFilterItemAction" text="Parser Filters" />
   </items>
 </Menu>
     <Menu mnemonicParsing="false" text="Help">
@@ -35,4 +35,4 @@
 <bottom><HBox prefHeight="30.0" prefWidth="600.0" BorderPane.alignment="CENTER">
 <children><Pane prefHeight="30.0" prefWidth="360.0" HBox.hgrow="SOMETIMES" /><Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="76.0" text="Url in Queue: " /><Label fx:id="urlCountInQueueLabel" layoutX="-13.9951171875" layoutY="5.5" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="51.0" text="0" /><Label prefHeight="17.0" prefWidth="69.0" text="Url in Table: " /><Label fx:id="urlCountInTable" layoutX="-13.9951171875" layoutY="5.5" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="51.0" text="0" />
 </children></HBox>
-</bottom></fx:root>
+</bottom></BorderPane>
