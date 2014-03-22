@@ -7,10 +7,34 @@ import java.util.Properties;
  * Created by Lopatin on 22.03.2014.
  */
 public class Options {
+    /**
+     * Получение всех ссылок на сайте
+     */
     public static boolean urlSelectorEnabled;
+    /**
+     * Получение всех изображений
+     */
     public static boolean imgSelectorEnabled;
+    /**
+     * Получение всех CSS
+     */
     public static boolean cssSelectorEnabled;
+    /**
+     * Получение всех JS на сайте
+     */
+    public static boolean jsSelectorEnabled;
+    /**
+     * Таймаут ожидания запроса
+     */
     public static Integer timeout;
+    /**
+     * Максимальный уровнь захода по ссылкам
+     */
+    public static Integer maxLvl;
+    /**
+     * Исплючение повторяющихся ссылок
+     */
+    public static boolean excludeRepeatedUrl;
 
     private static final String FILE_NAME = "options.ini";
 
@@ -32,6 +56,9 @@ public class Options {
         urlSelectorEnabled = Boolean.parseBoolean(properties.getProperty("urlSelectorEnabled", "true"));
         imgSelectorEnabled = Boolean.parseBoolean(properties.getProperty("imgSelectorEnabled", "true"));
         cssSelectorEnabled = Boolean.parseBoolean(properties.getProperty("cssSelectorEnabled", "true"));
+        jsSelectorEnabled = Boolean.parseBoolean(properties.getProperty("jsSelectorEnabled", "true"));
+        excludeRepeatedUrl = Boolean.parseBoolean(properties.getProperty("excludeRepeatedUrl", "true"));
+        maxLvl = Integer.parseInt(properties.getProperty("maxLvl", "100"));
         timeout = Integer.parseInt(properties.getProperty("timeout", "1000"));
     }
 
@@ -42,6 +69,9 @@ public class Options {
         properties.setProperty("urlSelectorEnabled", Boolean.toString(urlSelectorEnabled));
         properties.setProperty("imgSelectorEnabled", Boolean.toString(imgSelectorEnabled));
         properties.setProperty("cssSelectorEnabled", Boolean.toString(cssSelectorEnabled));
+        properties.setProperty("jsSelectorEnabled", Boolean.toString(jsSelectorEnabled));
+        properties.setProperty("excludeRepeatedUrl", Boolean.toString(excludeRepeatedUrl));
+        properties.setProperty("maxLvl", "100");
         properties.setProperty("timeout", "1000");
 
         try {

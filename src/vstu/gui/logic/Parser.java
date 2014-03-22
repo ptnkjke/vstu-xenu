@@ -9,6 +9,7 @@ import vstu.gui.data.Options;
 import vstu.gui.forms.main.DataTable;
 import vstu.gui.forms.main.ITableWorker;
 
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,31 +21,27 @@ import java.util.Queue;
 public class Parser {
 
     /**
-     * Список проверенных Url
+     * Список проверенных объектов
      */
-    public static List<String> checkedUrlList = new ArrayList<String>();
-    static Thread thread1;
-
-    /**
-     * Максимальный уровень рекурсии
-     */
-    private static final int MAX_LEVEL = 3;
-    /**
-     * Максимальны йтаймаут для проверки ссылки ms
-     */
-    private static final int MAX_TIMEOUT = 5000;
+    private List<String> checkedUrlList = new ArrayList<String>();
     /**
      * Очередь ссылок на проверки
      */
-    private static Queue<UrlData> queue = new LinkedList<UrlData>();
+    private Queue<UrlData> queue = new LinkedList<UrlData>();
+    /**
+     * Объект для синхронизации потоков
+     */
+    private Object sync = new Object();
+    /**
+     * Родитель
+     */
+    public ITableWorker tableWorker;
+    /**
+     * Список всех созданных потоков
+     */
+    public List<Thread> list = new ArrayList<>();
 
-    private static Object sync = new Object();
-
-    public static ITableWorker tableWorker;
-
-    public static List<Thread> list = new ArrayList<>();
-
-    public static void startCheck(final String url) {
+    public void startCheck(final String url) {
         /**
          * Пять потоков занимаются чеканьем
          */
@@ -62,7 +59,6 @@ public class Parser {
                             synchronized (sync) {
                                 ud = queue.poll();
                             }
-
                             checkUrl(ud.getUrl(), ud.getLvl());
                         }
 
@@ -79,7 +75,7 @@ public class Parser {
             list.add(thread);
         }
 
-        thread1 = new Thread(new Runnable() {
+        Thread thread1 = new Thread(new Runnable() {
             @Override
             public void run() {
                 checkUrl(url, 0);
@@ -98,26 +94,26 @@ public class Parser {
      * @param url Необходимы url
      * @param lvl Текущая глубина захода
      */
-    public static void checkUrl(final String url, final int lvl) {
+    public void checkUrl(final String url, final int lvl) {
 
 
         Connection.Response response;
 
         // Повторно не заходим
-        if (checkedUrlList.contains(url)) {
+        if (Options.excludeRepeatedUrl && checkedUrlList.contains(url)) {
             return;
         }
 
-        if (lvl > MAX_LEVEL) {
+        // Глубина уровня
+        if (Options.maxLvl != -1 && lvl > Options.maxLvl) {
             return;
         }
 
         try {
-            response = Jsoup.connect(url).ignoreContentType(true).ignoreHttpErrors(true).timeout(MAX_TIMEOUT).execute();
+            response = Jsoup.connect(url).ignoreContentType(true).ignoreHttpErrors(true).timeout(Options.timeout).execute();
 
             // Добавляем строку в таблицу
             checkedUrlList.add(url);
-
 
             Integer code = response.statusCode();
             Integer bytes = response.bodyAsBytes().length;
@@ -125,7 +121,6 @@ public class Parser {
             String charset = response.charset();
 
             tableWorker.addRow(new DataTable(url, code.toString(), lvl, type, charset, bytes));
-
 
             // Это html-страница
             if (response.contentType().contains("text/html")) {
@@ -142,6 +137,8 @@ public class Parser {
         } catch (java.net.SocketTimeoutException exception) {
             tableWorker.addRow(new DataTable(url, "timeout", lvl, "", "", 0));
             exception.printStackTrace();
+        } catch (UnknownHostException e) {
+            tableWorker.addRow(new DataTable(url, "unknown host", lvl, "", "", 0));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -149,7 +146,7 @@ public class Parser {
     }
 
 
-    public static List<String> getAbsUrls(Document doc) {
+    public List<String> getAbsUrls(Document doc) {
         List<String> ur = new ArrayList<String>();
 
         if (Options.urlSelectorEnabled) {
@@ -173,13 +170,11 @@ public class Parser {
             }
         }
 
+        if(Options.jsSelectorEnabled){
+
+        }
+
 
         return ur;
     }
-
-    public static void stop() {
-        thread1.stop();
-
-    }
-
 }

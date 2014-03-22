@@ -4,17 +4,21 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="154.0" prefWidth="252.0" type="GridPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vstu.gui.forms.options.preferences.PreferencesController">
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="243.0" prefWidth="356.0" type="GridPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vstu.gui.forms.options.preferences.PreferencesController">
   <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="134.0" minWidth="10.0" prefWidth="108.0" />
+    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="134.0" minWidth="10.0" prefWidth="108.0" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="220.0" minWidth="10.0" prefWidth="92.0" />
   </columnConstraints>
   <rowConstraints>
+<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
-<children><Label text="Url selector:" /><Label text="Css selector:" GridPane.rowIndex="1" /><Label text="Img selector:" GridPane.rowIndex="2" /><Button id="urlButton" fx:id="urlButton" mnemonicParsing="false" onAction="#onUrlButtonAction" text="Button" GridPane.columnIndex="1" /><Button id="cssButton" fx:id="cssButton" mnemonicParsing="false" onAction="#onCssButtonAction" text="Button" GridPane.columnIndex="1" GridPane.rowIndex="1" /><Button id="imgButton" fx:id="imgButton" mnemonicParsing="false" onAction="#onImgButtonAction" text="Button" GridPane.columnIndex="1" GridPane.rowIndex="2" /><Label text="Timeout:" GridPane.rowIndex="3" /><TextField fx:id="timeoutTF" onKeyTyped="#onTimeoutKeyEvent" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+<children><Label alignment="TOP_LEFT" text="Url selector:" /><Label text="Css selector:" GridPane.rowIndex="1" /><Label text="Img selector:" GridPane.rowIndex="2" /><Button id="urlButton" fx:id="urlButton" mnemonicParsing="false" onAction="#onUrlButtonAction" text="Button" GridPane.columnIndex="1" /><Button id="cssButton" fx:id="cssButton" mnemonicParsing="false" onAction="#onCssButtonAction" text="Button" GridPane.columnIndex="1" GridPane.rowIndex="1" /><Button id="imgButton" fx:id="imgButton" mnemonicParsing="false" onAction="#onImgButtonAction" text="Button" GridPane.columnIndex="1" GridPane.rowIndex="2" /><Label text="Timeout:" GridPane.rowIndex="5" /><TextField fx:id="timeoutTF" onKeyTyped="#onTimeoutKeyEvent" GridPane.columnIndex="1" GridPane.rowIndex="5" /><Label text="JS selector:" GridPane.rowIndex="3" /><Button id="imgButton" fx:id="jsButton" mnemonicParsing="false" onAction="#onJSButtonAction" text="Button" GridPane.columnIndex="1" GridPane.rowIndex="3" /><Label text="Exclude repeated url" GridPane.rowIndex="4" /><Button id="imgButton" fx:id="excludeButton" mnemonicParsing="false" onAction="#onExcludeButtonAction" text="Button" GridPane.columnIndex="1" GridPane.rowIndex="4" /><Label text="Tag search:" GridPane.rowIndex="6" /><Label text="Text search:" GridPane.rowIndex="7" /><TextField fx:id="tagSearchTB" GridPane.columnIndex="1" GridPane.rowIndex="6" /><TextField fx:id="textSearch" GridPane.columnIndex="1" GridPane.rowIndex="7" />
 </children>
 </fx:root>

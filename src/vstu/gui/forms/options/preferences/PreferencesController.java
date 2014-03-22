@@ -20,6 +20,11 @@ public class PreferencesController {
     @FXML
     private Button urlButton;
     @FXML
+    private Button jsButton;
+    @FXML
+    private Button excludeButton;
+
+    @FXML
     private TextField timeoutTF;
 
     @FXML
@@ -46,6 +51,22 @@ public class PreferencesController {
         } else {
             cssButton.setText("OFF");
             cssButton.setStyle("-fx-background-color: red;-fx-text-fill:white;");
+        }
+
+        if (Options.jsSelectorEnabled) {
+            jsButton.setText("ON");
+            jsButton.setStyle("-fx-background-color: green;-fx-text-fill:white;");
+        } else {
+            jsButton.setText("OFF");
+            jsButton.setStyle("-fx-background-color: red;-fx-text-fill:white;");
+        }
+
+        if (Options.excludeRepeatedUrl) {
+            excludeButton.setText("ON");
+            excludeButton.setStyle("-fx-background-color: green;-fx-text-fill:white;");
+        } else {
+            excludeButton.setText("OFF");
+            excludeButton.setStyle("-fx-background-color: red;-fx-text-fill:white;");
         }
 
         timeoutTF.setText(Integer.toString(Options.timeout));
@@ -90,6 +111,34 @@ public class PreferencesController {
             imgButton.setText("ON");
             imgButton.setStyle("-fx-background-color: green;-fx-text-fill:white;");
             imgButton.setContentDisplay(ContentDisplay.RIGHT);
+        }
+    }
+
+    public void onJSButtonAction() {
+        if (Options.jsSelectorEnabled) {
+            Options.jsSelectorEnabled = false;
+            jsButton.setText("OFF");
+            jsButton.setStyle("-fx-background-color: red;-fx-text-fill:white;");
+            jsButton.setContentDisplay(ContentDisplay.LEFT);
+        } else {
+            Options.jsSelectorEnabled = true;
+            jsButton.setText("ON");
+            jsButton.setStyle("-fx-background-color: green;-fx-text-fill:white;");
+            jsButton.setContentDisplay(ContentDisplay.RIGHT);
+        }
+    }
+
+    public void onExcludeButtonAction() {
+        if (Options.excludeRepeatedUrl) {
+            Options.excludeRepeatedUrl = false;
+            excludeButton.setText("OFF");
+            excludeButton.setStyle("-fx-background-color: red;-fx-text-fill:white;");
+            excludeButton.setContentDisplay(ContentDisplay.LEFT);
+        } else {
+            Options.excludeRepeatedUrl = true;
+            excludeButton.setText("ON");
+            excludeButton.setStyle("-fx-background-color: green;-fx-text-fill:white;");
+            excludeButton.setContentDisplay(ContentDisplay.RIGHT);
         }
     }
 
