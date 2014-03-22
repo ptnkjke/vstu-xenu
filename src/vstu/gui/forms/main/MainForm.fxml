@@ -9,7 +9,7 @@
 <columnResizePolicy>
 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
 </columnResizePolicy>
-<columns><TableColumn fx:id="addressColumn" prefWidth="75.0" text="Address" /><TableColumn fx:id="statusColumn" prefWidth="75.0" text="Status" /><TableColumn fx:id="typeColumn" prefWidth="75.0" text="Type" /><TableColumn fx:id="charsetColumn" prefWidth="75.0" text="Charset" /><TableColumn fx:id="lvlColumn" prefWidth="75.0" text="Lvl" />
+<columns><TableColumn fx:id="addressColumn" prefWidth="75.0" sortable="false" text="Address" /><TableColumn fx:id="statusColumn" prefWidth="75.0" sortable="false" text="Status" /><TableColumn fx:id="typeColumn" prefWidth="75.0" sortable="false" text="Type" /><TableColumn fx:id="charsetColumn" prefWidth="75.0" sortable="false" text="Charset" /><TableColumn fx:id="lvlColumn" prefWidth="75.0" sortable="false" text="Lvl" /><TableColumn fx:id="sizeColumn" prefWidth="75.0" sortable="false" text="Size" />
 </columns>
 </TableView>
 </center>
@@ -27,7 +27,7 @@
     </Menu>
   </menus>
 </MenuBar><ToolBar prefWidth="200.0">
-<items><Label text="Url: " /><TextField fx:id="urlTF" /><Button mnemonicParsing="false" onAction="#onStartButtonAction" text="Start" />
+<items><Label text="Url: " /><TextField fx:id="urlTF" /><Button fx:id="startButton" mnemonicParsing="false" onAction="#onStartButtonAction" text="Start" />
 </items>
 </ToolBar>
 </children></VBox>

@@ -9,18 +9,21 @@ public class DataTable {
     private Integer lvlColumn;
     private String typeColumn;
     private String charset;
+    private Integer size;
 
     public DataTable(String address,
                      String statusColumn,
                      Integer lvlColumn,
                      String typeColumn,
-                     String charset) {
+                     String charset,
+                     Integer size) {
 
         this.address = address;
         this.statusColumn = statusColumn;
         this.lvlColumn = lvlColumn;
         this.typeColumn = typeColumn;
         this.charset = charset;
+        this.size = size;
     }
 
     public String getAddress() {
@@ -61,5 +64,13 @@ public class DataTable {
 
     public void setCharset(String charset) {
         this.charset = charset;
+    }
+
+    public Integer getSize() {
+        return size;
+    }
+
+    public void setSize(Integer size) {
+        this.size = size;
     }
 }

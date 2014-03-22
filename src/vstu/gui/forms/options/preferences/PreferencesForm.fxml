@@ -4,16 +4,17 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="92.0" prefWidth="287.0" type="GridPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vstu.gui.forms.options.preferences.PreferencesController">
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="154.0" prefWidth="252.0" type="GridPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vstu.gui.forms.options.preferences.PreferencesController">
   <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="125.0" minWidth="10.0" prefWidth="124.0" />
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="220.0" minWidth="10.0" prefWidth="157.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="134.0" minWidth="10.0" prefWidth="108.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="220.0" minWidth="10.0" prefWidth="92.0" />
   </columnConstraints>
   <rowConstraints>
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
-<children><Label text="Url selector:" /><Label text="Css selector:" GridPane.rowIndex="1" /><Label text="Img selector:" GridPane.rowIndex="2" /><Button id="urlButton" fx:id="urlButton" mnemonicParsing="false" onAction="#onUrlButtonAction" text="Button" GridPane.columnIndex="1" /><Button id="cssButton" fx:id="cssButton" mnemonicParsing="false" onAction="#onCssButtonAction" text="Button" GridPane.columnIndex="1" GridPane.rowIndex="1" /><Button id="imgButton" fx:id="imgButton" mnemonicParsing="false" onAction="#onImgButtonAction" text="Button" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+<children><Label text="Url selector:" /><Label text="Css selector:" GridPane.rowIndex="1" /><Label text="Img selector:" GridPane.rowIndex="2" /><Button id="urlButton" fx:id="urlButton" mnemonicParsing="false" onAction="#onUrlButtonAction" text="Button" GridPane.columnIndex="1" /><Button id="cssButton" fx:id="cssButton" mnemonicParsing="false" onAction="#onCssButtonAction" text="Button" GridPane.columnIndex="1" GridPane.rowIndex="1" /><Button id="imgButton" fx:id="imgButton" mnemonicParsing="false" onAction="#onImgButtonAction" text="Button" GridPane.columnIndex="1" GridPane.rowIndex="2" /><Label text="Timeout:" GridPane.rowIndex="3" /><TextField fx:id="timeoutTF" onKeyTyped="#onTimeoutKeyEvent" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 </children>
 </fx:root>

@@ -42,6 +42,8 @@ public class Parser {
 
     public static ITableWorker tableWorker;
 
+    public static List<Thread> list = new ArrayList<>();
+
     public static void startCheck(final String url) {
         /**
          * Пять потоков занимаются чеканьем
@@ -74,6 +76,7 @@ public class Parser {
             });
 
             thread.start();
+            list.add(thread);
         }
 
         thread1 = new Thread(new Runnable() {
@@ -84,6 +87,7 @@ public class Parser {
         });
 
         thread1.start();
+        list.add(thread1);
 
 
     }
@@ -120,7 +124,7 @@ public class Parser {
             String type = response.contentType();
             String charset = response.charset();
 
-            tableWorker.addRow(new DataTable(url, code.toString(), lvl, type, charset));
+            tableWorker.addRow(new DataTable(url, code.toString(), lvl, type, charset, bytes));
 
 
             // Это html-страница
@@ -136,7 +140,7 @@ public class Parser {
             }
 
         } catch (java.net.SocketTimeoutException exception) {
-            tableWorker.addRow(new DataTable(url, "timeout", lvl, "", ""));
+            tableWorker.addRow(new DataTable(url, "timeout", lvl, "", "", 0));
             exception.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();

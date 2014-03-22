@@ -3,6 +3,10 @@ package vstu.gui.forms.options.preferences;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.TextField;
+import javafx.scene.input.InputEvent;
+import javafx.scene.input.InputMethodEvent;
+import javafx.scene.input.KeyEvent;
 import vstu.gui.data.Options;
 
 /**
@@ -15,6 +19,8 @@ public class PreferencesController {
     private Button cssButton;
     @FXML
     private Button urlButton;
+    @FXML
+    private TextField timeoutTF;
 
     @FXML
     private void initialize() {
@@ -41,6 +47,8 @@ public class PreferencesController {
             cssButton.setText("OFF");
             cssButton.setStyle("-fx-background-color: red;-fx-text-fill:white;");
         }
+
+        timeoutTF.setText(Integer.toString(Options.timeout));
     }
 
     public void onUrlButtonAction() {
@@ -55,8 +63,6 @@ public class PreferencesController {
             urlButton.setStyle("-fx-background-color: green;-fx-text-fill:white;");
             urlButton.setContentDisplay(ContentDisplay.RIGHT);
         }
-
-        Options.save();
     }
 
     public void onCssButtonAction() {
@@ -71,8 +77,6 @@ public class PreferencesController {
             cssButton.setStyle("-fx-background-color: green;-fx-text-fill:white;");
             cssButton.setContentDisplay(ContentDisplay.RIGHT);
         }
-
-        Options.save();
     }
 
     public void onImgButtonAction() {
@@ -87,7 +91,9 @@ public class PreferencesController {
             imgButton.setStyle("-fx-background-color: green;-fx-text-fill:white;");
             imgButton.setContentDisplay(ContentDisplay.RIGHT);
         }
+    }
 
-        Options.save();
+    public void onTimeoutKeyEvent() {
+        Options.timeout = Integer.parseInt(timeoutTF.getText());
     }
 }
