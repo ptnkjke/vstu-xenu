@@ -6,6 +6,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import vstu.gui.data.OptionsProperties;
+import vstu.gui.data.ParserFilter;
 import vstu.gui.forms.main.DataTable;
 import vstu.gui.forms.main.ITableWorker;
 
@@ -149,6 +150,7 @@ public class Parser {
     public List<String> getAbsUrls(Document doc) {
         List<String> ur = new ArrayList<String>();
 
+        // url - селектор
         if (OptionsProperties.urlSelectorEnabled) {
             Elements links = doc.select("a[href]");
             for (Element element : links) {
@@ -156,6 +158,7 @@ public class Parser {
             }
         }
 
+        // img - селектор
         if (OptionsProperties.imgSelectorEnabled) {
             Elements imglink = doc.select("img[src]");
             for (Element element : imglink) {
@@ -163,6 +166,7 @@ public class Parser {
             }
         }
 
+        // css - селектор
         if (OptionsProperties.cssSelectorEnabled) {
             Elements csslink = doc.select("link[href]");
             for (Element element : csslink) {
@@ -170,10 +174,22 @@ public class Parser {
             }
         }
 
-        if(OptionsProperties.jsSelectorEnabled){
+        // js - селектор
+        if (OptionsProperties.jsSelectorEnabled) {
 
         }
 
+        // Фильруем список на ссылки исключённые из обработки
+        if (ParserFilter.exludeList.size() > 0) {
+            for (String url : ParserFilter.exludeList) {
+
+            }
+        }
+
+        // Фильруем список на ссылки, который должны быть в обработки
+        if (ParserFilter.includeList.size() > 0) {
+
+        }
 
         return ur;
     }
