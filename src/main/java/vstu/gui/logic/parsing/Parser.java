@@ -1,4 +1,4 @@
-package vstu.gui.logic;
+package vstu.gui.logic.parsing;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;

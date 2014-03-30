@@ -1,4 +1,4 @@
-package vstu.gui.logic;
+package vstu.gui.logic.parsing;
 
 /**
  * Created by Lopatin on 20.03.14.

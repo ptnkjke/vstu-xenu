@@ -25,7 +25,7 @@ import javafx.util.Callback;
 import vstu.gui.data.OptionsProperties;
 import vstu.gui.forms.options.parserfilter.ParserFilterController;
 import vstu.gui.forms.options.preferences.PreferencesController;
-import vstu.gui.logic.Parser;
+import vstu.gui.logic.parsing.Parser;
 
 import java.awt.*;
 import java.io.IOException;
