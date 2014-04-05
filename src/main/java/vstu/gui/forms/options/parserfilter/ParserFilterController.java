@@ -8,18 +8,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 import vstu.gui.data.ParserFilter;
-import vstu.gui.forms.main.DataTable;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -59,6 +52,23 @@ public class ParserFilterController implements Initializable {
 
     public ListView<String> getExcludeList() {
         return excludeList;
+    }
+
+
+    public TextField getTextSearchTB() {
+        return textSearchTB;
+    }
+
+    public TextField getTagSearchTB() {
+        return tagSearchTB;
+    }
+
+    public TextField getIncludeUrlTB() {
+        return includeUrlTB;
+    }
+
+    public TextField getExcludeUrlTB() {
+        return excludeUrlTB;
     }
 
     public void initialize(URL url, ResourceBundle resourceBundle) {

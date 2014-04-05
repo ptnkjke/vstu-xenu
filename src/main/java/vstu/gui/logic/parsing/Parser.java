@@ -7,7 +7,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import vstu.gui.data.OptionsProperties;
 import vstu.gui.data.ParserFilter;
-import vstu.gui.forms.main.DataTable;
 import vstu.gui.forms.main.ITableWorker;
 
 import java.net.UnknownHostException;
@@ -28,7 +27,7 @@ public class Parser {
     /**
      * Очередь ссылок на проверки
      */
-    private Queue<UrlData> queue = new LinkedList<UrlData>();
+    private Queue<vstu.gui.logic.parsing.UrlData> queue = new LinkedList<vstu.gui.logic.parsing.UrlData>();
     /**
      * Объект для синхронизации потоков
      */
@@ -40,7 +39,11 @@ public class Parser {
     /**
      * Список всех созданных потоков
      */
-    public List<Thread> list = new ArrayList<>();
+    public List<Thread> threads = new ArrayList<>();
+    /**
+     * Главный поток
+     */
+    public MainThread mainThread;
 
     public void startCheck(final String url) {
         /**
@@ -48,45 +51,84 @@ public class Parser {
          */
         for (int i = 0; i < 10; i++) {
             Thread thread;
-            thread = new Thread(new Runnable() {
-
-                @Override
-                public void run() {
-                    while (true) {
-
-                        while (!queue.isEmpty()) {
-                            UrlData ud = null;
-
-                            synchronized (sync) {
-                                ud = queue.poll();
-                            }
-                            checkUrl(ud.getUrl(), ud.getLvl());
-                        }
-
-                        try {
-                            Thread.sleep(300);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            });
+            thread = new OtherThread();
 
             thread.start();
-            list.add(thread);
+            threads.add(thread);
         }
 
-        Thread thread1 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                checkUrl(url, 0);
+        mainThread = new MainThread(url);
+
+        mainThread.start();
+        threads.add(mainThread);
+    }
+
+    /**
+     * Класс основного потока
+     */
+    private class MainThread extends Thread {
+        private boolean stop = false;
+
+        private String url;
+
+        public MainThread(String url) {
+            this.url = url;
+        }
+
+        @Override
+        public void run() {
+            checkUrl(url, 0);
+            stop = true;
+        }
+
+        @Override
+        public void interrupt() {
+            stop = true;
+            super.interrupt();
+        }
+
+        public boolean isStop() {
+            return stop;
+        }
+    }
+
+    /**
+     * Класс побочных потоков
+     */
+    private class OtherThread extends Thread {
+        private boolean stop = false;
+
+
+        @Override
+        public void run() {
+            while (true) {
+
+                while (!queue.isEmpty()) {
+                    vstu.gui.logic.parsing.UrlData ud = null;
+
+                    synchronized (sync) {
+                        ud = queue.poll();
+                    }
+                    checkUrl(ud.getUrl(), ud.getLvl());
+                }
+
+                try {
+                    Thread.sleep(300);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
-        });
+        }
 
-        thread1.start();
-        list.add(thread1);
+        @Override
+        public void interrupt() {
+            stop = true;
+            super.interrupt();
+        }
 
-
+        public boolean isStop() {
+            return stop;
+        }
     }
 
     /**
@@ -121,7 +163,7 @@ public class Parser {
             String type = response.contentType();
             String charset = response.charset();
 
-            tableWorker.addRow(new DataTable(url, code.toString(), lvl, type, charset, bytes));
+            tableWorker.addRow(new vstu.gui.forms.main.UrlData(url, code.toString(), lvl, type, charset, bytes, url));
 
             // Это html-страница
             if (response.contentType().contains("text/html")) {
@@ -129,23 +171,22 @@ public class Parser {
                 List<String> urls = getAbsUrls(response.parse());
                 synchronized (sync) {
                     for (String _url : urls) {
-                        queue.add(new UrlData(_url, lvl + 1));
+                        queue.add(new vstu.gui.logic.parsing.UrlData(_url, lvl + 1));
                     }
                 }
                 tableWorker.updateCountUrlInQueue(queue.size());
             }
 
         } catch (java.net.SocketTimeoutException exception) {
-            tableWorker.addRow(new DataTable(url, "timeout", lvl, "", "", 0));
+            tableWorker.addRow(new vstu.gui.forms.main.UrlData(url, "timeout", lvl, "", "", 0, url));
             exception.printStackTrace();
         } catch (UnknownHostException e) {
-            tableWorker.addRow(new DataTable(url, "unknown host", lvl, "", "", 0));
+            tableWorker.addRow(new vstu.gui.forms.main.UrlData(url, "unknown host", lvl, "", "", 0, url));
         } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
-
 
     public List<String> getAbsUrls(Document doc) {
         List<String> ur = new ArrayList<String>();
@@ -192,5 +233,22 @@ public class Parser {
         }
 
         return ur;
+    }
+
+    /**
+     * Закончилась ли работа?
+     *
+     * @return
+     */
+    public boolean isFinish() {
+        // TODO: Нужно как-то это сделать
+
+        for (Thread thread : threads) {
+            if (thread.isAlive()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

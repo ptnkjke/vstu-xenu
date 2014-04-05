@@ -37,21 +37,24 @@ import java.net.URISyntaxException;
  * Created by Lopatin on 21.03.14.
  */
 public class MainFormController implements ITableWorker {
-    private ObservableList<DataTable> dataTables = FXCollections.observableArrayList();
+    /**
+     * Список обработанных url, да и по совместительству представление в таблице
+     */
+    private ObservableList<UrlData> dataTables = FXCollections.observableArrayList();
     @FXML
-    private TableView<DataTable> tableTW;
+    private TableView<UrlData> tableTW;
     @FXML
-    private TableColumn<DataTable, String> addressColumn;
+    private TableColumn<UrlData, String> addressColumn;
     @FXML
-    private TableColumn<DataTable, String> statusColumn;
+    private TableColumn<UrlData, String> statusColumn;
     @FXML
-    private TableColumn<DataTable, Integer> lvlColumn;
+    private TableColumn<UrlData, Integer> lvlColumn;
     @FXML
-    private TableColumn<DataTable, String> typeColumn;
+    private TableColumn<UrlData, String> typeColumn;
     @FXML
-    private TableColumn<DataTable, String> charsetColumn;
+    private TableColumn<UrlData, String> charsetColumn;
     @FXML
-    private TableColumn<DataTable, String> sizeColumn;
+    private TableColumn<UrlData, String> sizeColumn;
     @FXML
     private TextField urlTF;
     @FXML
@@ -69,13 +72,13 @@ public class MainFormController implements ITableWorker {
     @FXML
     private void initialize() {
         // Инициализация таблици
-        addressColumn.setCellValueFactory(new PropertyValueFactory<DataTable, String>("address"));
+        addressColumn.setCellValueFactory(new PropertyValueFactory<UrlData, String>("address"));
 
         // Добавление возможности, чтобы по клику ячейки открывался браузер
-        addressColumn.setCellFactory(new Callback<TableColumn<DataTable, String>, TableCell<DataTable, String>>() {
+        addressColumn.setCellFactory(new Callback<TableColumn<UrlData, String>, TableCell<UrlData, String>>() {
             @Override
-            public TableCell<DataTable, String> call(TableColumn<DataTable, String> dataTableStringTableColumn) {
-                TableCell cell = new TableCell<DataTable, String>() {
+            public TableCell<UrlData, String> call(TableColumn<UrlData, String> dataTableStringTableColumn) {
+                TableCell cell = new TableCell<UrlData, String>() {
                     @Override
                     protected void updateItem(String item, boolean empty) {
                         super.updateItem(item, empty);
@@ -114,17 +117,21 @@ public class MainFormController implements ITableWorker {
             }
         });
 
-        statusColumn.setCellValueFactory(new PropertyValueFactory<DataTable, String>("statusColumn"));
-        lvlColumn.setCellValueFactory(new PropertyValueFactory<DataTable, Integer>("lvlColumn"));
-        typeColumn.setCellValueFactory(new PropertyValueFactory<DataTable, String>("typeColumn"));
-        charsetColumn.setCellValueFactory(new PropertyValueFactory<DataTable, String>("charset"));
-        sizeColumn.setCellValueFactory(new PropertyValueFactory<DataTable, String>("size"));
+        statusColumn.setCellValueFactory(new PropertyValueFactory<UrlData, String>("status"));
+        lvlColumn.setCellValueFactory(new PropertyValueFactory<UrlData, Integer>("lvl"));
+        typeColumn.setCellValueFactory(new PropertyValueFactory<UrlData, String>("type"));
+        charsetColumn.setCellValueFactory(new PropertyValueFactory<UrlData, String>("charset"));
+        sizeColumn.setCellValueFactory(new PropertyValueFactory<UrlData, String>("size"));
         tableTW.setItems(dataTables);
         tableTW.setPlaceholder(new Text("VSTU XENU 2014"));
     }
 
-    public void onSaveAsHtmlMenuItemAction(){
+    public void onSaveAsHtmlMenuItemAction() {
+        // Если обработка завершена
 
+        // Показать диалог для сохранения файла
+
+        // Сохранить в файл
     }
 
     public void onPreferencesMenuItemAction() {
@@ -207,6 +214,49 @@ public class MainFormController implements ITableWorker {
             }
         });
 
+        // Добавление записи в список по нажатию ENTER
+        controller.getIncludeList().getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.ENTER), new Runnable() {
+            @Override
+            public void run() {
+
+                TextField tf;
+                tf = controller.getExcludeUrlTB();
+                if (tf.isFocused()) {
+                    String text = tf.getText();
+                    if (!text.isEmpty()) {
+                        controller.getExcludeList().getItems().add(text);
+                        tf.setText("");
+                    }
+                }
+
+                tf = controller.getIncludeUrlTB();
+                if (tf.isFocused()) {
+                    String text = tf.getText();
+                    if (!text.isEmpty()) {
+                        controller.getIncludeList().getItems().add(text);
+                        tf.setText("");
+                    }
+                }
+
+                tf = controller.getTagSearchTB();
+                if (tf.isFocused()) {
+                    String text = tf.getText();
+                    if (!text.isEmpty()) {
+                        controller.getTagList().getItems().add(text);
+                        tf.setText("");
+                    }
+                }
+                tf = controller.getTextSearchTB();
+
+                if (tf.isFocused()) {
+                    String text = tf.getText();
+                    if (!text.isEmpty()) {
+                        controller.getSearchList().getItems().add(text);
+                        tf.setText("");
+                    }
+                }
+            }
+        });
 
         dialog.show();
     }
@@ -221,17 +271,17 @@ public class MainFormController implements ITableWorker {
             isStartPasring = true;
             parser.startCheck(url);
         } else {
-            for (Thread thread : parser.list) {
-                thread.stop();
+            for (Thread thread : parser.threads) {
+                thread.interrupt();
             }
-            parser.list.clear();
+            parser.threads.clear();
             isStartPasring = false;
             startButton.setText("Start");
         }
     }
 
     @Override
-    public void addRow(final DataTable dt) {
+    public void addRow(final UrlData dt) {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {

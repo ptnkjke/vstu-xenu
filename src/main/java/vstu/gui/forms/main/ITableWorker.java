@@ -9,7 +9,7 @@ public interface ITableWorker {
      *
      * @param dt
      */
-    public void addRow(DataTable dt);
+    public void addRow(UrlData dt);
 
     /**
      * Обновление количества записей, которые стоят в очереди на проверку
