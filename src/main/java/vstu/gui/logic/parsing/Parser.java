@@ -142,7 +142,7 @@ public class Parser {
      */
     public void checkUrl(final String url, final int lvl) {
         // Ссылка на том же сайте? (Чтобы за пределы сайта не расползаться)
-        if (OptionsProperties.movingBeyond && !url.contains(mainUrl)) {
+        if (!OptionsProperties.movingBeyond && !url.contains(mainUrl)) {
             return;
         }
 
@@ -158,7 +158,13 @@ public class Parser {
 
         Connection.Response response;
         try {
-            response = Jsoup.connect(url).ignoreContentType(true).ignoreHttpErrors(true).timeout(OptionsProperties.timeout).execute();
+            response = Jsoup.connect(url).
+                    ignoreContentType(true).
+                    ignoreHttpErrors(true).
+                    timeout(OptionsProperties.timeout)
+                    .userAgent("Mozilla/17.0")
+                    .followRedirects(true)
+                    .execute();
 
             // Добавляем строку в таблицу
             checkedUrlList.add(url);
@@ -170,15 +176,31 @@ public class Parser {
 
             vstu.gui.forms.main.UrlData
                     data = new vstu.gui.forms.main.UrlData(url, code.toString(), lvl, type, charset, bytes, url);
-            // TODO: Проверка на содержимое тега
-
-            // TODO: Проверка на содержимое текста
 
 
             tableWorker.addRow(data);
 
             // Это html-страница
             if (response.contentType().contains("text/html")) {
+
+                // Проверка на содержимое тега
+                Elements elements = response.parse().getAllElements();
+                for (String tag : ParserFilter.tagList) {
+                    for (Element element : elements) {
+                        if (element.tagName().equals(tag)) {
+                            data.getContainsTag().add(tag);
+                            break;
+                        }
+                    }
+                }
+
+                // Проверка на содержимое текста
+                String html_data = response.body();
+                for (String containsTest : ParserFilter.searchList) {
+                    if (html_data.contains(containsTest)) {
+                        data.getContainsText().add(containsTest);
+                    }
+                }
 
                 List<String> urls = getAbsUrls(response.parse());
                 synchronized (sync) {
@@ -229,7 +251,10 @@ public class Parser {
 
         // js - селектор
         if (OptionsProperties.jsSelectorEnabled) {
-            // TODO: Реализовать
+            Elements jsLink = doc.select("script[src]");
+            for (Element element : jsLink) {
+                ur.add(element.attr("abs:src"));
+            }
         }
 
         // Фильруем список на ссылки исключённые из обработки
