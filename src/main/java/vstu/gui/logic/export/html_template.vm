@@ -1,38 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head lang="en">
-    <meta charset="UTF-8">
-    <title>Результат</title>
-    <style type="text/css">
-        .urlinfo {
-            border: 1px solid rgba(0, 0, 0, 0.67);
-            background-color: rgba(96, 96, 96, 0.100);
-            color: #2e2e2e;
-            font: normal 10px Tahoma, Arial, sans-serif;
-            line-height: 1.4;
-            padding: 1px 16px;
-            text-align: left;
-            margin-right: 15px;
-            margin-left: 95px;
-            width: 533px;
-            margin-bottom: 1px;
-            border-radius: 2px;
-        }
-    </style>
+    <title>Report</title>
 </head>
 <body>
+<h3>Contents:</h3>
+<a href="#brokenLinls">Broken links</a>
+<br>
+<a href="#validLinks">Valid links</a>
 
-<div class="urlinfo">
 
-    [1]URL: <a href="http://localhost:63342/untitled1/main.html" style="padding-right: 0px">http://localhost:63342/untitled1/main.html</a>
-    <br>
-    STATUS: 404
-    <br>
-    [2]URL: <a href="http://localhost:63342/untitled1/main.html" style="padding-right: 0px">http://localhost:63342/untitled1/main.html</a>
-    <br>
-    PARENT: <a href="http://localhost:63342/untitled1/main.html" style="padding-right: 0px">http://localhost:63342/untitled1/main.html</a>
-    <br>
-    STATUS: 404
-</div>
+<h2><a name="brokenLinls"></a>Broken links:</h2>
+    #foreach( $data in $datas )
+        #if ($data.status == "200")
+        #end
+    #end
+<h2><a name="validLinks"></a>Valid links:</h2>
+    #foreach( $data in $datas )
+        #if ($data.status != "200")
+        #end
+    #end
 </body>
 </html>

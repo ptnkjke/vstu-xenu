@@ -17,17 +17,16 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.stage.WindowEvent;
+import javafx.stage.*;
 import javafx.util.Callback;
 import vstu.gui.data.OptionsProperties;
 import vstu.gui.forms.options.parserfilter.ParserFilterController;
 import vstu.gui.forms.options.preferences.PreferencesController;
+import vstu.gui.logic.export.HtmlExport;
 import vstu.gui.logic.parsing.Parser;
 
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -130,8 +129,12 @@ public class MainFormController implements ITableWorker {
         // Если обработка завершена
 
         // Показать диалог для сохранения файла
+        FileChooser chooser = new FileChooser();
+        File file = chooser.showSaveDialog(null);
 
         // Сохранить в файл
+        HtmlExport export = new HtmlExport();
+        export.createResultDoc(dataTables, file);
     }
 
     public void onPreferencesMenuItemAction() {

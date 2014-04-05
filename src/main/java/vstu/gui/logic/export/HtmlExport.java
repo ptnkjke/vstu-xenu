@@ -5,6 +5,9 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import vstu.gui.forms.main.UrlData;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.util.List;
 
@@ -13,15 +16,29 @@ import java.util.List;
  */
 public class HtmlExport {
 
-    public static void createResultDoc(List<UrlData> datas, String outputFile) {
+    public void createResultDoc(List<UrlData> datas, File outputFile) {
         VelocityEngine ve = new VelocityEngine();
+        ve.setProperty("resource.loader", "class");
+        ve.setProperty("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
 
-        StringWriter writer = new StringWriter();
+        FileWriter writer = null;
+        try {
+            writer = new FileWriter(outputFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         VelocityContext vc = new VelocityContext();
+        vc.put("datas", datas);
 
-        Template t = ve.getTemplate("html_template.vm");
+        Template t = ve.getTemplate("/vstu/gui/logic/export/html_template.vm");
 
         t.merge(vc, writer);
+
+        try {
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
