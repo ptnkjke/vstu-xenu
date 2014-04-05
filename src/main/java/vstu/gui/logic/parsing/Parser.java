@@ -104,7 +104,7 @@ public class Parser {
 
         @Override
         public void run() {
-            while (true) {
+            while (true && !stop) {
 
                 while (!queue.isEmpty()) {
                     vstu.gui.logic.parsing.UrlData ud = null;
@@ -141,6 +141,18 @@ public class Parser {
      * @param lvl Текущая глубина захода
      */
     public void checkUrl(final String url, final int lvl) {
+        // Мы пытаемся остановить?
+        Thread thread = Thread.currentThread();
+        if (thread instanceof OtherThread) {
+            if (((OtherThread) thread).isStop()) {
+                return;
+            }
+        } else if (thread instanceof MainThread) {
+            if (((MainThread) thread).isStop()) {
+                return;
+            }
+        }
+
         // Ссылка на том же сайте? (Чтобы за пределы сайта не расползаться)
         if (!OptionsProperties.movingBeyond && !url.contains(mainUrl)) {
             return;
@@ -316,5 +328,4 @@ public class Parser {
         return url.substring(startIndexof + 2, secondIndexOf);
 
     }
-
 }
