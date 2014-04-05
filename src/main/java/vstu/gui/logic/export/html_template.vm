@@ -12,12 +12,18 @@
 
 <h2><a name="brokenLinls"></a>Broken links:</h2>
     #foreach( $data in $datas )
-        #if ($data.status == "200")
+        #if ($data.status != "200")
+        <a href="$data.address">$data.address</a>
+        <br>
+        status: $data.status parent: <a href="$data.parentUrl">$data.parentUrl</a>
+        <br>
         #end
     #end
 <h2><a name="validLinks"></a>Valid links:</h2>
     #foreach( $data in $datas )
-        #if ($data.status != "200")
+        #if ($data.status == "200")
+        <a href="$data.address">$data.address</a>
+        <br>
         #end
     #end
 </body>

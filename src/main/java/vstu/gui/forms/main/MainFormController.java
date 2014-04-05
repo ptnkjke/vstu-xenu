@@ -130,6 +130,8 @@ public class MainFormController implements ITableWorker {
 
         // Показать диалог для сохранения файла
         FileChooser chooser = new FileChooser();
+        chooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("HTML", "*.html"));
+
         File file = chooser.showSaveDialog(null);
 
         // Сохранить в файл
@@ -273,6 +275,9 @@ public class MainFormController implements ITableWorker {
             dataTables.clear();
             isStartPasring = true;
             parser.startCheck(url);
+
+            // Запускаем таймер, который бы отслеживал состояние потоков для вывода соощений о завершении обработки
+
         } else {
             for (Thread thread : parser.threads) {
                 thread.interrupt();
