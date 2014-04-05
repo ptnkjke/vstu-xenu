@@ -123,6 +123,10 @@ public class MainFormController implements ITableWorker {
         tableTW.setPlaceholder(new Text("VSTU XENU 2014"));
     }
 
+    public void onSaveAsHtmlMenuItemAction(){
+
+    }
+
     public void onPreferencesMenuItemAction() {
         Parent root = null;
         try {

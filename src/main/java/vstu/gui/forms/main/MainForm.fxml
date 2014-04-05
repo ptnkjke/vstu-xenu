@@ -15,7 +15,11 @@
 </center>
 <top><VBox prefHeight="48.0" prefWidth="600.0" BorderPane.alignment="CENTER">
 <children><MenuBar>
-  <menus><Menu mnemonicParsing="false" text="Options">
+  <menus><Menu mnemonicParsing="false" text="File">
+  <items>
+    <MenuItem id="saveAsHtml" mnemonicParsing="false" onAction="#onSaveAsHtmlMenuItemAction" text="Save as Html" />
+  </items>
+</Menu><Menu mnemonicParsing="false" text="Options">
   <items>
     <MenuItem fx:id="preferencesMenuItem" mnemonicParsing="false" onAction="#onPreferencesMenuItemAction" text="Preferences.." /><MenuItem mnemonicParsing="false" onAction="#onParserFilterItemAction" text="Parser Filters" />
   </items>
