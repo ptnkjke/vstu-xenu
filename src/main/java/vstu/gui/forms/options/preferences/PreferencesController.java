@@ -18,6 +18,8 @@ public class PreferencesController {
     private Button jsButton;
     @FXML
     private Button excludeButton;
+    @FXML
+    private Button mBeyondButton;
 
     @FXML
     private TextField timeoutTF;
@@ -63,6 +65,14 @@ public class PreferencesController {
         } else {
             excludeButton.setText("OFF");
             excludeButton.setStyle("-fx-background-color: red;-fx-text-fill:white;");
+        }
+
+        if (OptionsProperties.movingBeyond) {
+            mBeyondButton.setText("ON");
+            mBeyondButton.setStyle("-fx-background-color: green;-fx-text-fill:white;");
+        } else {
+            mBeyondButton.setText("OFF");
+            mBeyondButton.setStyle("-fx-background-color: red;-fx-text-fill:white;");
         }
 
         timeoutTF.setText(Integer.toString(OptionsProperties.timeout));
@@ -135,6 +145,20 @@ public class PreferencesController {
             excludeButton.setText("ON");
             excludeButton.setStyle("-fx-background-color: green;-fx-text-fill:white;");
             excludeButton.setContentDisplay(ContentDisplay.RIGHT);
+        }
+    }
+
+    public void onMovingBeyondButton() {
+        if (OptionsProperties.movingBeyond) {
+            OptionsProperties.movingBeyond = false;
+            mBeyondButton.setText("OFF");
+            mBeyondButton.setStyle("-fx-background-color: red;-fx-text-fill:white;");
+            mBeyondButton.setContentDisplay(ContentDisplay.LEFT);
+        } else {
+            OptionsProperties.movingBeyond = true;
+            mBeyondButton.setText("ON");
+            mBeyondButton.setStyle("-fx-background-color: green;-fx-text-fill:white;");
+            mBeyondButton.setContentDisplay(ContentDisplay.RIGHT);
         }
     }
 

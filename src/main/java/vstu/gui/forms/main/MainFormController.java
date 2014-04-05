@@ -134,6 +134,10 @@ public class MainFormController implements ITableWorker {
 
         File file = chooser.showSaveDialog(null);
 
+        if (file == null) {
+            return;
+        }
+
         // Сохранить в файл
         HtmlExport export = new HtmlExport();
         export.createResultDoc(dataTables, file);

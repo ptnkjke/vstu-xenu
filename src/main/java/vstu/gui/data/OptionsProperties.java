@@ -32,9 +32,14 @@ public class OptionsProperties {
      */
     public static Integer maxLvl;
     /**
-     * Исплючение повторяющихся ссылок
+     * Исключение повторяющихся ссылок
      */
     public static boolean excludeRepeatedUrl;
+    /**
+     * Выход за пределы сайта
+     */
+    public static boolean movingBeyond;
+
 
     private static final String FILE_NAME = "options.ini";
 
@@ -58,6 +63,7 @@ public class OptionsProperties {
         cssSelectorEnabled = Boolean.parseBoolean(properties.getProperty("cssSelectorEnabled", "true"));
         jsSelectorEnabled = Boolean.parseBoolean(properties.getProperty("jsSelectorEnabled", "true"));
         excludeRepeatedUrl = Boolean.parseBoolean(properties.getProperty("excludeRepeatedUrl", "true"));
+        movingBeyond = Boolean.parseBoolean(properties.getProperty("movingBeyond", "false"));
         maxLvl = Integer.parseInt(properties.getProperty("maxLvl", "100"));
         timeout = Integer.parseInt(properties.getProperty("timeout", "1000"));
     }
@@ -71,6 +77,7 @@ public class OptionsProperties {
         properties.setProperty("cssSelectorEnabled", Boolean.toString(cssSelectorEnabled));
         properties.setProperty("jsSelectorEnabled", Boolean.toString(jsSelectorEnabled));
         properties.setProperty("excludeRepeatedUrl", Boolean.toString(excludeRepeatedUrl));
+        properties.setProperty("movingBeyond", Boolean.toString(movingBeyond));
         properties.setProperty("maxLvl", "100");
         properties.setProperty("timeout", "1000");
 

@@ -10,10 +10,7 @@ import vstu.gui.data.ParserFilter;
 import vstu.gui.forms.main.ITableWorker;
 
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 /**
  * Created by Lopatin on 20.03.14.
@@ -45,7 +42,13 @@ public class Parser {
      */
     public MainThread mainThread;
 
+    /**
+     * Любая ссылка должна начинаться с этого url, чтобы не выходить за пределы сайта
+     */
+    private String mainUrl;
+
     public void startCheck(final String url) {
+        mainUrl = getMainUrl(url);
         /**
          * Пять потоков занимаются чеканьем
          */
@@ -138,9 +141,10 @@ public class Parser {
      * @param lvl Текущая глубина захода
      */
     public void checkUrl(final String url, final int lvl) {
-
-
-        Connection.Response response;
+        // Ссылка на том же сайте? (Чтобы за пределы сайта не расползаться)
+        if (OptionsProperties.movingBeyond && !url.contains(mainUrl)) {
+            return;
+        }
 
         // Повторно не заходим
         if (OptionsProperties.excludeRepeatedUrl && checkedUrlList.contains(url)) {
@@ -152,6 +156,7 @@ public class Parser {
             return;
         }
 
+        Connection.Response response;
         try {
             response = Jsoup.connect(url).ignoreContentType(true).ignoreHttpErrors(true).timeout(OptionsProperties.timeout).execute();
 
@@ -163,7 +168,14 @@ public class Parser {
             String type = response.contentType();
             String charset = response.charset();
 
-            tableWorker.addRow(new vstu.gui.forms.main.UrlData(url, code.toString(), lvl, type, charset, bytes, url));
+            vstu.gui.forms.main.UrlData
+                    data = new vstu.gui.forms.main.UrlData(url, code.toString(), lvl, type, charset, bytes, url);
+            // TODO: Проверка на содержимое тега
+
+            // TODO: Проверка на содержимое текста
+
+
+            tableWorker.addRow(data);
 
             // Это html-страница
             if (response.contentType().contains("text/html")) {
@@ -189,7 +201,7 @@ public class Parser {
     }
 
     public List<String> getAbsUrls(Document doc) {
-        List<String> ur = new ArrayList<String>();
+        List<String> ur = new LinkedList<>();
 
         // url - селектор
         if (OptionsProperties.urlSelectorEnabled) {
@@ -217,19 +229,31 @@ public class Parser {
 
         // js - селектор
         if (OptionsProperties.jsSelectorEnabled) {
-
+            // TODO: Реализовать
         }
 
         // Фильруем список на ссылки исключённые из обработки
-        if (ParserFilter.exludeList.size() > 0) {
-            for (String url : ParserFilter.exludeList) {
-
+        for (String exclude : ParserFilter.exludeList) {
+            Iterator<String> iterator = ur.iterator();
+            // Ссылка есть в исключающем списке - удаляем
+            while (iterator.hasNext()) {
+                String current = iterator.next();
+                if (current.matches(exclude)) {
+                    iterator.remove();
+                }
             }
         }
 
         // Фильруем список на ссылки, который должны быть в обработки
-        if (ParserFilter.includeList.size() > 0) {
-
+        for (String include : ParserFilter.includeList) {
+            Iterator<String> iterator = ur.iterator();
+            // Ссылки нет во включающем списке - удалям
+            while (iterator.hasNext()) {
+                String current = iterator.next();
+                if (!current.matches(include)) {
+                    iterator.remove();
+                }
+            }
         }
 
         return ur;
@@ -251,4 +275,21 @@ public class Parser {
 
         return true;
     }
+
+    private static String getMainUrl(String url) {
+        int startIndexof = url.indexOf("//");
+        if (startIndexof == -1) {
+            return "";
+        }
+
+        int secondIndexOf = url.indexOf("/", startIndexof + 2);
+
+        if (secondIndexOf == -1) {
+            secondIndexOf = url.length();
+        }
+
+        return url.substring(startIndexof + 2, secondIndexOf);
+
+    }
+
 }

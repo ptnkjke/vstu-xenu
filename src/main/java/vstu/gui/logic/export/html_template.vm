@@ -8,7 +8,12 @@
 <a href="#brokenLinls">Broken links</a>
 <br>
 <a href="#validLinks">Valid links</a>
-
+<br>
+<a href="#tagSearch">Tag search</a>
+<br>
+<a href="#textSearch">Text search</a>
+<br>
+<a href="#statistic">Statistic</a>
 
 <h2><a name="brokenLinls"></a>Broken links:</h2>
     #foreach( $data in $datas )
@@ -19,12 +24,41 @@
         <br>
         #end
     #end
+    #set($brokenCount = 0)
 <h2><a name="validLinks"></a>Valid links:</h2>
     #foreach( $data in $datas )
         #if ($data.status == "200")
         <a href="$data.address">$data.address</a>
+            #set($brokenCount = $brokenCount + 1)
         <br>
         #end
     #end
+<h2><a name="tagSearch"></a>Tag links:</h2>
+    #foreach( $tagText in $tagList )
+    <h3>$tagText</h3>
+        #foreach( $data in $datas )
+            #if ($data.containsTag.contains($tagText))
+            <a href="$data.address">$data.address</a>
+            <br>
+            #end
+        #end
+    #end
+
+<h2><a name="textSearch"></a>Text links:</h2>
+    #foreach( $searchText in $searchList )
+    <h3>$searchText</h3>
+        #foreach( $data in $datas )
+            #if ($data.containsText.contains($searchText))
+            <a href="$data.address">$data.address</a>
+            <br>
+            #end
+        #end
+    #end
+
+
+<h2><a name="statistic"></a>Statistic:</h2>
+AllCount: $count
+<br>
+BrokenCount: $brokenCount
 </body>
 </html>

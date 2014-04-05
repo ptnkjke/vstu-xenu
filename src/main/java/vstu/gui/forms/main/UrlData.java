@@ -4,6 +4,9 @@ package vstu.gui.forms.main;
  * Created by Lopatin on 22.03.14.
  */
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Представление данных о url
  */
@@ -36,6 +39,14 @@ public class UrlData {
      * Родительская ссылка
      */
     private String parentUrl;
+    /**
+     * Содержит теги, которые нужно
+     */
+    private List<String> containsTag = new ArrayList<>();
+    /**
+     * Содержит в себе подстроку
+     */
+    private List<String> containsText = new ArrayList<>();
 
     public UrlData(String address,
                    String statusColumn,
@@ -108,5 +119,21 @@ public class UrlData {
 
     public void setParentUrl(String parentUrl) {
         this.parentUrl = parentUrl;
+    }
+
+    public List<String> getContainsTag() {
+        return containsTag;
+    }
+
+    public void setContainsTag(List<String> containsTag) {
+        this.containsTag = containsTag;
+    }
+
+    public List<String> getContainsText() {
+        return containsText;
+    }
+
+    public void setContainsText(List<String> containsText) {
+        this.containsText = containsText;
     }
 }

@@ -3,6 +3,7 @@ package vstu.gui.logic.export;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
+import vstu.gui.data.ParserFilter;
 import vstu.gui.forms.main.UrlData;
 
 import java.io.File;
@@ -30,6 +31,9 @@ public class HtmlExport {
 
         VelocityContext vc = new VelocityContext();
         vc.put("datas", datas);
+        vc.put("count", datas.size());
+        vc.put("searchList", ParserFilter.searchList);
+        vc.put("tagList", ParserFilter.tagList);
 
         Template t = ve.getTemplate("/vstu/gui/logic/export/html_template.vm");
 
