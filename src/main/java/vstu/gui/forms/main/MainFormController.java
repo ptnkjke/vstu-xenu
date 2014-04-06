@@ -30,6 +30,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 /**
@@ -63,9 +65,18 @@ public class MainFormController implements ITableWorker {
     @FXML
     private Button startButton;
 
+    /**
+     * Начался ли разбор страни?
+     */
     private boolean isStartPasring = false;
-
+    /**
+     * Объект для парсера
+     */
     private Parser parser;
+    /**
+     * Объект для таймера
+     */
+    private Timer timer;
 
 
     @FXML
@@ -281,14 +292,66 @@ public class MainFormController implements ITableWorker {
             parser.startCheck(url);
 
             // Запускаем таймер, который бы отслеживал состояние потоков для вывода соощений о завершении обработки
+            timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (parser.isFinish()) {
+                                timer.cancel();
+                                onStop();
+
+                                // Показывае финишное окошечко
+                                Parent root = null;
+                                FXMLLoader fxmlLoader = null;
+                                try {
+                                    fxmlLoader = new FXMLLoader(getClass().getResource("/vstu/gui/forms/popups/FinishForm.fxml"));
+                                    fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
+
+                                    root = (Parent) fxmlLoader.load();
+
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+
+                                final Stage dialog = new Stage();
+                                dialog.initStyle(StageStyle.UTILITY);
+                                dialog.setResizable(false);
+                                dialog.initModality(Modality.APPLICATION_MODAL);
+                                dialog.setScene(new Scene(root));
+
+                                dialog.setTitle("Finish");
+
+                                dialog.show();
+                            }
+                        }
+                    });
+                }
+            }, OptionsProperties.timeout, OptionsProperties.timeout);
 
         } else {
-            for (Thread thread : parser.threads) {
-                thread.interrupt();
-            }
-            parser.threads.clear();
-            isStartPasring = false;
-            startButton.setText("Start");
+            onStop();
+        }
+    }
+
+    private void onStop() {
+        for (Thread thread : parser.threads) {
+            thread.interrupt();
+        }
+
+        parser.threads.clear();
+        if (parser.mainThread != null) {
+            Thread t = parser.mainThread;
+            t.interrupt();
+        }
+
+        isStartPasring = false;
+        startButton.setText("Start");
+
+        if (timer != null) {
+            timer.cancel();
         }
     }
 

@@ -9,6 +9,7 @@ import vstu.gui.data.OptionsProperties;
 import vstu.gui.data.ParserFilter;
 import vstu.gui.forms.main.ITableWorker;
 
+import javax.print.attribute.standard.MediaSize;
 import java.net.UnknownHostException;
 import java.util.*;
 
@@ -36,7 +37,7 @@ public class Parser {
     /**
      * Список всех созданных потоков
      */
-    public List<Thread> threads = new ArrayList<>();
+    public List<OtherThread> threads = new ArrayList<>();
     /**
      * Главный поток
      */
@@ -53,7 +54,7 @@ public class Parser {
          * Пять потоков занимаются чеканьем
          */
         for (int i = 0; i < 10; i++) {
-            Thread thread;
+            OtherThread thread;
             thread = new OtherThread();
 
             thread.start();
@@ -63,7 +64,6 @@ public class Parser {
         mainThread = new MainThread(url);
 
         mainThread.start();
-        threads.add(mainThread);
     }
 
     /**
@@ -302,15 +302,7 @@ public class Parser {
      * @return
      */
     public boolean isFinish() {
-        // TODO: Нужно как-то это сделать
-
-        for (Thread thread : threads) {
-            if (thread.isAlive()) {
-                return false;
-            }
-        }
-
-        return true;
+        return queue.size() == 0;
     }
 
     private static String getMainUrl(String url) {
