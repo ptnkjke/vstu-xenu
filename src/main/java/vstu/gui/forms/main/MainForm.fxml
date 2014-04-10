@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
@@ -11,6 +12,9 @@
 </columnResizePolicy>
 <columns><TableColumn fx:id="addressColumn" prefWidth="75.0" sortable="false" text="Address" /><TableColumn fx:id="statusColumn" prefWidth="75.0" sortable="false" text="Status" /><TableColumn fx:id="typeColumn" prefWidth="75.0" sortable="false" text="Type" /><TableColumn fx:id="charsetColumn" prefWidth="75.0" sortable="false" text="Charset" /><TableColumn fx:id="lvlColumn" prefWidth="75.0" sortable="false" text="Lvl" /><TableColumn fx:id="sizeColumn" prefWidth="75.0" sortable="false" text="Size(byte)" />
 </columns>
+<BorderPane.margin>
+<Insets left="1.0" right="1.0" />
+</BorderPane.margin>
 </TableView>
 </center>
 <top><VBox prefHeight="48.0" prefWidth="600.0" BorderPane.alignment="CENTER">
