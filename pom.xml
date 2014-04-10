@@ -6,7 +6,7 @@
 
     <groupId>VSTU-XENU</groupId>
     <artifactId>VSTU-XENU</artifactId>
-    <version>1.0</version>
+    <version>1.2</version>
     <packaging>jar</packaging>
 
     <dependencies>
