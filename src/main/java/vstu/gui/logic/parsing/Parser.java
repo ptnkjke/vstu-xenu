@@ -12,6 +12,7 @@ import vstu.gui.forms.main.ITableWorker;
 import javax.print.attribute.standard.MediaSize;
 import java.net.UnknownHostException;
 import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * Created by Lopatin on 20.03.14.
@@ -21,7 +22,7 @@ public class Parser {
     /**
      * Список проверенных объектов
      */
-    private List<String> checkedUrlList = new ArrayList<String>();
+    private List<String> checkedUrlList = Collections.synchronizedList(new ArrayList<String>());
     /**
      * Очередь ссылок на проверки
      */
@@ -140,7 +141,7 @@ public class Parser {
      * @param url Необходимы url
      * @param lvl Текущая глубина захода
      */
-    public void checkUrl(final String url, final int lvl) {
+    public void checkUrl(String url, final int lvl) {
         // Мы пытаемся остановить?
         Thread thread = Thread.currentThread();
         if (thread instanceof OtherThread) {
@@ -151,6 +152,14 @@ public class Parser {
             if (((MainThread) thread).isStop()) {
                 return;
             }
+        }
+
+        // Убиваем последний слеш
+        if (url.length() > 0 && url.charAt(url.length() - 1) == '\\') {
+            StringBuilder sb = new StringBuilder(url);
+            sb.deleteCharAt(url.length() - 1);
+
+            url = sb.toString();
         }
 
         // Ссылка на том же сайте? (Чтобы за пределы сайта не расползаться)
@@ -168,6 +177,10 @@ public class Parser {
             return;
         }
 
+        // Добавляем строку в таблицу
+        checkedUrlList.add(url);
+
+
         Connection.Response response;
         try {
             response = Jsoup.connect(url).
@@ -177,9 +190,6 @@ public class Parser {
                     .userAgent("Mozilla/17.0")
                     .followRedirects(true)
                     .execute();
-
-            // Добавляем строку в таблицу
-            checkedUrlList.add(url);
 
             Integer code = response.statusCode();
             Integer bytes = response.bodyAsBytes().length;
@@ -271,11 +281,13 @@ public class Parser {
 
         // Фильруем список на ссылки исключённые из обработки
         for (String exclude : ParserFilter.exludeList) {
+            Pattern pattern = Pattern.compile(exclude);
+
             Iterator<String> iterator = ur.iterator();
             // Ссылка есть в исключающем списке - удаляем
             while (iterator.hasNext()) {
                 String current = iterator.next();
-                if (current.matches(exclude)) {
+                if (pattern.matcher(current).find()) {
                     iterator.remove();
                 }
             }
@@ -284,10 +296,12 @@ public class Parser {
         // Фильруем список на ссылки, который должны быть в обработки
         for (String include : ParserFilter.includeList) {
             Iterator<String> iterator = ur.iterator();
+
+            Pattern pattern = Pattern.compile(include);
             // Ссылки нет во включающем списке - удалям
             while (iterator.hasNext()) {
                 String current = iterator.next();
-                if (!current.matches(include)) {
+                if (!pattern.matcher(current).find()) {
                     iterator.remove();
                 }
             }

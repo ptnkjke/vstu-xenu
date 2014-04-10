@@ -324,12 +324,13 @@ public class MainFormController implements ITableWorker {
 
                                 dialog.setTitle("Finish");
 
+                                urlCountInQueueLabel.setText(Integer.toString(0));
                                 dialog.show();
                             }
                         }
                     });
                 }
-            }, OptionsProperties.timeout, OptionsProperties.timeout);
+            }, OptionsProperties.timeout + 2000, OptionsProperties.timeout + 2000);
 
         } else {
             onStop();

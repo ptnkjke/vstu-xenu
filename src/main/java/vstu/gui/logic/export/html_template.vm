@@ -17,20 +17,20 @@
 <a href="#statistic">Statistic</a>
 
 <h2><a name="brokenLinls"></a>Broken links:</h2>
+    #set($brokenCount = 0)
     #foreach( $data in $datas )
         #if ($data.status != "200")
         <a href="$data.address">$data.address</a>
         <br>
         status: $data.status parent: <a href="$data.parentUrl">$data.parentUrl</a>
         <br>
+        #set($brokenCount = $brokenCount + 1)
         #end
     #end
-    #set($brokenCount = 0)
 <h2><a name="validLinks"></a>Valid links:</h2>
     #foreach( $data in $datas )
         #if ($data.status == "200")
         <a href="$data.address">$data.address</a>
-            #set($brokenCount = $brokenCount + 1)
         <br>
         #end
     #end
