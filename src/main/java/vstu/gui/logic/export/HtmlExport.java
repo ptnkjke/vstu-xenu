@@ -6,10 +6,8 @@ import org.apache.velocity.app.VelocityEngine;
 import vstu.gui.data.ParserFilter;
 import vstu.gui.forms.main.UrlData;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.StringWriter;
+import java.io.*;
+import java.nio.charset.Charset;
 import java.util.List;
 
 /**
@@ -22,9 +20,9 @@ public class HtmlExport {
         ve.setProperty("resource.loader", "class");
         ve.setProperty("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
 
-        FileWriter writer = null;
+        Writer writer = null;
         try {
-            writer = new FileWriter(outputFile);
+            writer = new OutputStreamWriter(new FileOutputStream(outputFile), Charset.forName("UTF-8").newEncoder());
         } catch (IOException e) {
             e.printStackTrace();
         }
