@@ -39,6 +39,7 @@ public class MainForm extends Application {
             }
         });
 
+        root.getStylesheets().add("/vstu/gui/forms/table.css");
         stage.show();
 
     }

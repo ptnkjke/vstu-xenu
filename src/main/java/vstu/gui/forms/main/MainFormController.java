@@ -176,6 +176,7 @@ public class MainFormController implements ITableWorker {
             }
         });
 
+        root.getStylesheets().add("/vstu/gui/forms/table.css");
         dialog.show();
     }
 
@@ -277,7 +278,7 @@ public class MainFormController implements ITableWorker {
                 }
             }
         });
-
+        root.getStylesheets().add("/vstu/gui/forms/table.css");
         dialog.show();
     }
 

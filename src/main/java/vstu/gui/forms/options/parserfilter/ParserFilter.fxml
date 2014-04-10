@@ -4,8 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox prefHeight="320.0" prefWidth="306.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="vstu.gui.forms.options.parserfilter.ParserFilterController">
+<VBox prefHeight="460.0" prefWidth="305.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vstu.gui.forms.options.parserfilter.ParserFilterController">
     <children>
         <VBox prefHeight="120.0" prefWidth="356.0">
             <children>
@@ -13,20 +12,18 @@
                     <children>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="SOMETIMES">
                             <children>
-                                <Label text="Text search"/>
+                                <Label text="Text search" />
                             </children>
                         </HBox>
-                        <HBox alignment="TOP_RIGHT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="24.0"
-                              prefWidth="220.0" HBox.hgrow="SOMETIMES">
+                        <HBox alignment="TOP_RIGHT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="24.0" prefWidth="220.0" HBox.hgrow="SOMETIMES">
                             <children>
-                                <TextField fx:id="textSearchTB" HBox.hgrow="SOMETIMES"/>
-                                <Button mnemonicParsing="false" onAction="#onAddTextSearchBAction" text="Add"/>
+                                <TextField fx:id="textSearchTB" HBox.hgrow="SOMETIMES" />
+                                <Button mnemonicParsing="false" onAction="#onAddTextSearchBAction" text="Add" />
                             </children>
                         </HBox>
                     </children>
                 </HBox>
-                <ListView fx:id="searchList" editable="true" maxHeight="-Infinity" minHeight="-Infinity"
-                          prefHeight="80.0" prefWidth="356.0" VBox.vgrow="SOMETIMES"/>
+                <ListView fx:id="searchList" editable="true" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="80.0" prefWidth="356.0" VBox.vgrow="SOMETIMES" />
             </children>
         </VBox>
         <VBox prefHeight="120.0" prefWidth="100.0">
@@ -35,20 +32,18 @@
                     <children>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="SOMETIMES">
                             <children>
-                                <Label text="Tag search"/>
+                                <Label text="Tag search" />
                             </children>
                         </HBox>
-                        <HBox alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                              minWidth="-Infinity" prefHeight="24.0" prefWidth="220.0" HBox.hgrow="SOMETIMES">
+                        <HBox alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="24.0" prefWidth="220.0" HBox.hgrow="SOMETIMES">
                             <children>
-                                <TextField fx:id="tagSearchTB" HBox.hgrow="SOMETIMES"/>
-                                <Button mnemonicParsing="false" onAction="#onAddTagSearchB" text="Add"/>
+                                <TextField fx:id="tagSearchTB" HBox.hgrow="SOMETIMES" />
+                                <Button mnemonicParsing="false" onAction="#onAddTagSearchB" text="Add" />
                             </children>
                         </HBox>
                     </children>
                 </HBox>
-                <ListView fx:id="tagList" editable="true" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="80.0"
-                          prefWidth="356.0" VBox.vgrow="SOMETIMES"/>
+                <ListView fx:id="tagList" editable="true" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="80.0" prefWidth="356.0" VBox.vgrow="SOMETIMES" />
             </children>
         </VBox>
         <VBox prefHeight="120.0" prefWidth="100.0">
@@ -57,43 +52,38 @@
                     <children>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="SOMETIMES">
                             <children>
-                                <Label text="Include url"/>
+                                <Label text="Include url" />
                             </children>
                         </HBox>
-                        <HBox alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                              minWidth="-Infinity" prefHeight="24.0" prefWidth="220.0" HBox.hgrow="SOMETIMES">
+                        <HBox alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="24.0" prefWidth="220.0" HBox.hgrow="SOMETIMES">
                             <children>
-                                <TextField fx:id="includeUrlTB" HBox.hgrow="SOMETIMES"/>
-                                <Button mnemonicParsing="false" onAction="#onAddIncludeUrlSearchB" text="Add"/>
+                                <TextField fx:id="includeUrlTB" HBox.hgrow="SOMETIMES" />
+                                <Button mnemonicParsing="false" onAction="#onAddIncludeUrlSearchB" text="Add" />
                             </children>
                         </HBox>
                     </children>
                 </HBox>
-                <ListView fx:id="includeList" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="80.0"
-                          prefWidth="356.0" VBox.vgrow="SOMETIMES"/>
+                <ListView fx:id="includeList" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="80.0" prefWidth="356.0" VBox.vgrow="SOMETIMES" />
             </children>
         </VBox>
         <VBox prefHeight="120.0" prefWidth="327.0">
             <children>
-                <HBox alignment="TOP_RIGHT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="24.0"
-                      prefWidth="200.0">
+                <HBox alignment="TOP_RIGHT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="24.0" prefWidth="200.0">
                     <children>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="SOMETIMES">
                             <children>
-                                <Label text="Exclude url"/>
+                                <Label text="Exclude url" />
                             </children>
                         </HBox>
-                        <HBox alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                              minWidth="-Infinity" prefHeight="24.0" prefWidth="220.0" HBox.hgrow="SOMETIMES">
+                        <HBox alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="24.0" prefWidth="220.0" HBox.hgrow="SOMETIMES">
                             <children>
-                                <TextField fx:id="excludeUrlTB" HBox.hgrow="SOMETIMES"/>
-                                <Button mnemonicParsing="false" onAction="#onAddExcludeUrlSearchB" text="Add"/>
+                                <TextField fx:id="excludeUrlTB" HBox.hgrow="SOMETIMES" />
+                                <Button mnemonicParsing="false" onAction="#onAddExcludeUrlSearchB" text="Add" />
                             </children>
                         </HBox>
                     </children>
                 </HBox>
-                <ListView fx:id="excludeList" editable="true" maxHeight="-Infinity" minHeight="-Infinity"
-                          prefHeight="80.0" prefWidth="200.0" VBox.vgrow="SOMETIMES"/>
+                <ListView fx:id="excludeList" editable="true" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="80.0" prefWidth="200.0" VBox.vgrow="SOMETIMES" />
             </children>
         </VBox>
     </children>
