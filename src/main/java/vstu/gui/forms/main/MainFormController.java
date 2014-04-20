@@ -1,6 +1,8 @@
 package vstu.gui.forms.main;
 
 import javafx.application.Platform;
+import javafx.beans.property.MapProperty;
+import javafx.beans.property.MapPropertyBase;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -12,6 +14,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
@@ -30,6 +33,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -147,6 +151,10 @@ public class MainFormController implements ITableWorker {
 
         if (file == null) {
             return;
+        }
+
+        if (!file.getName().contains(".")) {
+            file = new File(file.getAbsolutePath() + ".html");
         }
 
         // Сохранить в файл

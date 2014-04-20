@@ -49,7 +49,11 @@ public class Parser {
      */
     private String mainUrl;
 
-    public void startCheck(final String url) {
+    public void startCheck(String url) {
+        if (!url.contains("http://")) {
+            url = "http://" + url;
+        }
+
         mainUrl = getMainUrl(url);
         /**
          * Пять потоков занимаются чеканьем
