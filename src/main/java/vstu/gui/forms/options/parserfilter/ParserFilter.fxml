@@ -5,7 +5,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox prefHeight="490.0" prefWidth="312.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vstu.gui.forms.options.parserfilter.ParserFilterController">
+<VBox prefHeight="493.0" prefWidth="369.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vstu.gui.forms.options.parserfilter.ParserFilterController">
     <children>
         <VBox prefHeight="120.0" prefWidth="356.0">
             <children>
@@ -13,7 +13,7 @@
                     <children>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="SOMETIMES">
                             <children>
-                                <Label text="Text search" />
+                                <Label text="%parserfilter.textsearch" />
                             </children>
                         </HBox>
                         <HBox alignment="TOP_RIGHT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="24.0" prefWidth="220.0" HBox.hgrow="SOMETIMES">
@@ -22,7 +22,7 @@
 <HBox.margin>
 <Insets />
 </HBox.margin></TextField>
-                                <Button mnemonicParsing="false" onAction="#onAddTextSearchBAction" text="Add">
+                                <Button mnemonicParsing="false" onAction="#onAddTextSearchBAction" text="+">
 <HBox.margin>
 <Insets right="2.0" />
 </HBox.margin></Button>
@@ -45,13 +45,13 @@
                     <children>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="SOMETIMES">
                             <children>
-                                <Label text="Tag search" />
+                                <Label text="%parserfilter.tagsearch" />
                             </children>
                         </HBox>
                         <HBox alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="24.0" prefWidth="220.0" HBox.hgrow="SOMETIMES">
                             <children>
                                 <TextField fx:id="tagSearchTB" HBox.hgrow="SOMETIMES" />
-                                <Button mnemonicParsing="false" onAction="#onAddTagSearchB" text="Add">
+                                <Button mnemonicParsing="false" onAction="#onAddTagSearchB" text="+">
 <HBox.margin>
 <Insets right="2.0" />
 </HBox.margin></Button>
@@ -71,13 +71,13 @@
                     <children>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="SOMETIMES">
                             <children>
-                                <Label text="Include url" />
+                                <Label text="%parserfilter.includeurl" />
                             </children>
                         </HBox>
                         <HBox alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="24.0" prefWidth="220.0" HBox.hgrow="SOMETIMES">
                             <children>
                                 <TextField fx:id="includeUrlTB" HBox.hgrow="SOMETIMES" />
-                                <Button mnemonicParsing="false" onAction="#onAddIncludeUrlSearchB" text="Add">
+                                <Button mnemonicParsing="false" onAction="#onAddIncludeUrlSearchB" text="+">
 <HBox.margin>
 <Insets right="2.0" />
 </HBox.margin></Button>
@@ -97,13 +97,13 @@
                     <children>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="SOMETIMES">
                             <children>
-                                <Label text="Exclude url" />
+                                <Label text="%parserfilter.exludeurl" />
                             </children>
                         </HBox>
                         <HBox alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="24.0" prefWidth="220.0" HBox.hgrow="SOMETIMES">
                             <children>
                                 <TextField fx:id="excludeUrlTB" HBox.hgrow="SOMETIMES" />
-                                <Button mnemonicParsing="false" onAction="#onAddExcludeUrlSearchB" text="Add">
+                                <Button mnemonicParsing="false" onAction="#onAddExcludeUrlSearchB" text="+">
 <HBox.margin>
 <Insets right="2.0" />
 </HBox.margin></Button>

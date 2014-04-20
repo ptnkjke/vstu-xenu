@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
+import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -169,7 +170,10 @@ public class MainFormController implements ITableWorker {
     public void onPreferencesMenuItemAction() {
         Parent root = null;
         try {
-            root = FXMLLoader.load(PreferencesController.class.getResource("/vstu/gui/forms/options/preferences/PreferencesForm.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setResources(ResourceBundle.getBundle("translation"));
+
+            root = (Parent) fxmlLoader.load(this.getClass().getResource("/vstu/gui/forms/options/preferences/PreferencesForm.fxml").openStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -196,10 +200,11 @@ public class MainFormController implements ITableWorker {
         Parent root = null;
         FXMLLoader fxmlLoader = null;
         try {
-            fxmlLoader = new FXMLLoader(getClass().getResource("/vstu/gui/forms/options/parserfilter/ParserFilter.fxml"));
+            fxmlLoader = new FXMLLoader();
+            fxmlLoader.setResources(ResourceBundle.getBundle("translation"));
             fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
 
-            root = (Parent) fxmlLoader.load();
+            root = (Parent) fxmlLoader.load(getClass().getResource("/vstu/gui/forms/options/parserfilter/ParserFilter.fxml").openStream());
 
         } catch (IOException e) {
             e.printStackTrace();

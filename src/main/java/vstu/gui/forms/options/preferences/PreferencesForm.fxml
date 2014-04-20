@@ -6,12 +6,14 @@
 
 <VBox prefHeight="158.0" prefWidth="349.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vstu.gui.forms.options.preferences.PreferencesController">
     <children>
-        <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="187.0" prefWidth="367.0">
+        <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="336.0" prefWidth="406.0">
             <columnConstraints>
-                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="134.0" minWidth="10.0" prefWidth="108.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="220.0" minWidth="10.0" prefWidth="92.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="180.0" minWidth="10.0" prefWidth="157.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="220.0" minWidth="10.0" prefWidth="197.0" />
             </columnConstraints>
             <rowConstraints>
+<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -22,18 +24,18 @@
 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Label alignment="TOP_LEFT" text="Url selector" />
-                <Label text="Css selector" GridPane.rowIndex="1" />
-                <Label text="Img selector" GridPane.rowIndex="2" />
+                <Label text="%preferenceform.urlselector" />
+                <Label text="%preferenceform.cssselector" GridPane.rowIndex="1" />
+                <Label text="%preferenceform.imgselector" GridPane.rowIndex="2" />
                 <Button id="urlButton" fx:id="urlButton" mnemonicParsing="false" onAction="#onUrlButtonAction" text="Button" GridPane.columnIndex="1" />
                 <Button id="cssButton" fx:id="cssButton" mnemonicParsing="false" onAction="#onCssButtonAction" text="Button" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                 <Button id="imgButton" fx:id="imgButton" mnemonicParsing="false" onAction="#onImgButtonAction" text="Button" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                <Label text="Timeout" GridPane.rowIndex="6" />
-                <TextField fx:id="timeoutTF" onKeyTyped="#onTimeoutKeyEvent" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                <Label text="JS selector" GridPane.rowIndex="3" />
+                <Label text="%preferenceform.timeout" GridPane.rowIndex="9" />
+                <TextField fx:id="timeoutTF" onKeyTyped="#onTimeoutKeyEvent" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                <Label text="%preferenceform.jsselector" GridPane.rowIndex="3" />
                 <Button id="imgButton" fx:id="jsButton" mnemonicParsing="false" onAction="#onJSButtonAction" text="Button" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                <Label text="Exclude repeated url" GridPane.rowIndex="4" />
-                <Button id="imgButton" fx:id="excludeButton" mnemonicParsing="false" onAction="#onExcludeButtonAction" text="Button" GridPane.columnIndex="1" GridPane.rowIndex="4" /><Label text="Moving beyond site" GridPane.rowIndex="5" /><Button id="mBeyondButton" fx:id="mBeyondButton" mnemonicParsing="false" onAction="#onMovingBeyondButton" text="Button" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                <Label text="%preferenceform.excluderepeatedurl" GridPane.rowIndex="4" />
+                <Button id="imgButton" fx:id="excludeButton" mnemonicParsing="false" onAction="#onExcludeButtonAction" text="Button" GridPane.columnIndex="1" GridPane.rowIndex="4" /><Label text="%preferenceform.movingbeyondsite" GridPane.rowIndex="5" /><Button id="mBeyondButton" fx:id="mBeyondButton" mnemonicParsing="false" onAction="#onMovingBeyondButton" text="Button" GridPane.columnIndex="1" GridPane.rowIndex="5" /><Slider fx:id="threadCounter" blockIncrement="1.0" min="1.0" prefHeight="24.0" prefWidth="220.0" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1" GridPane.rowIndex="8" /><Label text="%preferenceform.thread" GridPane.rowIndex="8" /><Label text="%preferenceform.language" GridPane.rowIndex="7" /><ComboBox fx:id="language" prefHeight="25.0" prefWidth="216.0" GridPane.columnIndex="1" GridPane.rowIndex="7" /><Label text="%preferenceform.movingsubdomain" GridPane.rowIndex="6" /><Button id="mBeyondButton" fx:id="mBeyondSubDomainButton" mnemonicParsing="false" onAction="#onBeyondSubDomainButton" text="Button" GridPane.columnIndex="1" GridPane.rowIndex="6" />
             </children>
         </GridPane>
     </children>

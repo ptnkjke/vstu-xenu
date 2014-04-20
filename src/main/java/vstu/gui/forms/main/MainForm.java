@@ -10,6 +10,7 @@ import javafx.stage.WindowEvent;
 import sun.text.resources.FormatData_es_MX;
 import vstu.gui.data.OptionsProperties;
 
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
@@ -28,6 +29,14 @@ public class MainForm extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         OptionsProperties.load();
+        switch (OptionsProperties.language) {
+            case ENGLISH:
+                Locale.setDefault(Locale.ENGLISH);
+                break;
+            case RUSSIAN:
+                Locale.setDefault(new Locale.Builder().setLanguage("ru").build());
+                break;
+        }
 
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setResources(ResourceBundle.getBundle("translation"));

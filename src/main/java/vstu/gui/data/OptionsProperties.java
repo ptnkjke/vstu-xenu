@@ -39,6 +39,19 @@ public class OptionsProperties {
      * Выход за пределы сайта
      */
     public static boolean movingBeyond;
+    /**
+     * Движение по поддоменам
+     */
+    public static boolean movingSubDomain;
+    /**
+     * Язык интерфейса программы
+     */
+    public static Language language;
+
+    /**
+     * Количество дополнительных поток (1 + это число), которые будут парсить страницу
+     */
+    public static int countThread;
 
 
     private static final String FILE_NAME = "options.ini";
@@ -63,9 +76,12 @@ public class OptionsProperties {
         cssSelectorEnabled = Boolean.parseBoolean(properties.getProperty("cssSelectorEnabled", "true"));
         jsSelectorEnabled = Boolean.parseBoolean(properties.getProperty("jsSelectorEnabled", "true"));
         excludeRepeatedUrl = Boolean.parseBoolean(properties.getProperty("excludeRepeatedUrl", "false"));
+        movingSubDomain = Boolean.parseBoolean(properties.getProperty("movingSubDomain", "false"));
         movingBeyond = Boolean.parseBoolean(properties.getProperty("movingBeyond", "false"));
         maxLvl = Integer.parseInt(properties.getProperty("maxLvl", "100"));
         timeout = Integer.parseInt(properties.getProperty("timeout", "1000"));
+        language = Language.valueOf(properties.getProperty("language", "ENGLISH"));
+        countThread = Integer.parseInt(properties.getProperty("countThread", "20"));
     }
 
     public static void save() {
@@ -78,8 +94,11 @@ public class OptionsProperties {
         properties.setProperty("jsSelectorEnabled", Boolean.toString(jsSelectorEnabled));
         properties.setProperty("excludeRepeatedUrl", Boolean.toString(excludeRepeatedUrl));
         properties.setProperty("movingBeyond", Boolean.toString(movingBeyond));
+        properties.setProperty("movingSubDomain", Boolean.toString(movingSubDomain));
         properties.setProperty("maxLvl", "100");
-        properties.setProperty("timeout", "1000");
+        properties.setProperty("timeout", Integer.toString(timeout));
+        properties.setProperty("language", language.toString());
+        properties.setProperty("countThread", Integer.toString(countThread));
 
         try {
             properties.store(new FileOutputStream(f), "vstu xenu file options");

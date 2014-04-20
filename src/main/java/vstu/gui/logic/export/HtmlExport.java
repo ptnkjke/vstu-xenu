@@ -9,6 +9,7 @@ import vstu.gui.forms.main.UrlData;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * Created by Lopatin on 30.03.2014.
@@ -32,6 +33,17 @@ public class HtmlExport {
         vc.put("count", datas.size());
         vc.put("searchList", ParserFilter.searchList);
         vc.put("tagList", ParserFilter.tagList);
+
+        ResourceBundle translationBundle = ResourceBundle.getBundle("translation");
+        vc.put("txt_brokenlinks", translationBundle.getString("htmlexport.txt_brokenlinks"));
+        vc.put("txt_status", translationBundle.getString("htmlexport.txt_status"));
+        vc.put("txt_parent", translationBundle.getString("htmlexport.txt_parent"));
+        vc.put("txt_validlinks", translationBundle.getString("htmlexport.txt_validlinks"));
+        vc.put("txt_tagsearch", translationBundle.getString("htmlexport.txt_tagsearch"));
+        vc.put("txt_textlinks", translationBundle.getString("htmlexport.txt_textlinks"));
+        vc.put("txt_statistic", translationBundle.getString("htmlexport.txt_statistic"));
+        vc.put("txt_allcount", translationBundle.getString("htmlexport.txt_allcount"));
+        vc.put("txt_brokencount", translationBundle.getString("htmlexport.txt_brokencount"));
 
         Template t = ve.getTemplate("/vstu/gui/logic/export/html_template.vm");
 

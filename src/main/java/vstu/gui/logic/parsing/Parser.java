@@ -58,7 +58,7 @@ public class Parser {
         /**
          * Пять потоков занимаются чеканьем
          */
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < OptionsProperties.countThread - 1; i++) {
             OtherThread thread;
             thread = new OtherThread();
 
