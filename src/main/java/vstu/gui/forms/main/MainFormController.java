@@ -18,6 +18,7 @@ import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.*;
@@ -103,6 +104,9 @@ public class MainFormController implements ITableWorker {
                 cell.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent mouseEvent) {
+                        if (mouseEvent.getButton() != MouseButton.PRIMARY) {
+                            return;
+                        }
                         TableCell tc = (TableCell) mouseEvent.getSource();
                         String url = tc.getText();
                         if (url != null) {
