@@ -62,7 +62,7 @@ public class OptionsProperties {
         imgSelectorEnabled = Boolean.parseBoolean(properties.getProperty("imgSelectorEnabled", "true"));
         cssSelectorEnabled = Boolean.parseBoolean(properties.getProperty("cssSelectorEnabled", "true"));
         jsSelectorEnabled = Boolean.parseBoolean(properties.getProperty("jsSelectorEnabled", "true"));
-        excludeRepeatedUrl = Boolean.parseBoolean(properties.getProperty("excludeRepeatedUrl", "true"));
+        excludeRepeatedUrl = Boolean.parseBoolean(properties.getProperty("excludeRepeatedUrl", "false"));
         movingBeyond = Boolean.parseBoolean(properties.getProperty("movingBeyond", "false"));
         maxLvl = Integer.parseInt(properties.getProperty("maxLvl", "100"));
         timeout = Integer.parseInt(properties.getProperty("timeout", "1000"));
