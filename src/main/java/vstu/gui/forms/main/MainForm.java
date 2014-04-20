@@ -7,7 +7,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import sun.text.resources.FormatData_es_MX;
 import vstu.gui.data.OptionsProperties;
+
+import java.util.ResourceBundle;
 
 /**
  * Created by Lopatin on 21.03.14.
@@ -26,7 +29,10 @@ public class MainForm extends Application {
     public void start(Stage stage) throws Exception {
         OptionsProperties.load();
 
-        Parent root = FXMLLoader.load(getClass().getResource("MainForm.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setResources(ResourceBundle.getBundle("translation"));
+
+        Parent root = (Parent) fxmlLoader.load(this.getClass().getResource("MainForm.fxml").openStream());
         stage.setTitle("Java XENU");
         Scene scene = new Scene(root);
         stage.setScene(scene);

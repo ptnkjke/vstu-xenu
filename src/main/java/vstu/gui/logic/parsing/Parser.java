@@ -9,7 +9,7 @@ import vstu.gui.data.OptionsProperties;
 import vstu.gui.data.ParserFilter;
 import vstu.gui.forms.main.ITableWorker;
 
-import javax.print.attribute.standard.MediaSize;
+import java.net.IDN;
 import java.net.UnknownHostException;
 import java.util.*;
 import java.util.regex.Pattern;
@@ -184,10 +184,11 @@ public class Parser {
         // Добавляем строку в таблицу
         checkedUrlList.add(url);
 
+        String url_punny = toPunnyCode(url);
 
         Connection.Response response;
         try {
-            response = Jsoup.connect(url).
+            response = Jsoup.connect(url_punny).
                     ignoreContentType(true).
                     ignoreHttpErrors(true).
                     timeout(OptionsProperties.timeout)
@@ -337,5 +338,11 @@ public class Parser {
 
         return url.substring(startIndexof + 2, secondIndexOf);
 
+    }
+
+    private static String toPunnyCode(String url) {
+        String result = url;
+        // IDN.toASCI();  - только для русской части
+        return result;
     }
 }
