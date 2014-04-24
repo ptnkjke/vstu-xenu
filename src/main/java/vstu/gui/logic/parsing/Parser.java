@@ -184,6 +184,8 @@ public class Parser {
         // Добавляем строку в таблицу
         checkedUrlList.add(url);
 
+        String domain = getDomain(url);
+        String punny = getPunnyPart(url);
         String url_punny = toPunnyCode(url);
 
         Connection.Response response;
@@ -202,7 +204,7 @@ public class Parser {
             String charset = response.charset();
 
             vstu.gui.forms.main.UrlData
-                    data = new vstu.gui.forms.main.UrlData(url, code.toString(), lvl, type, charset, bytes, url);
+                    data = new vstu.gui.forms.main.UrlData(url, code.toString(), lvl, type, charset, bytes, url, 0);
 
 
             tableWorker.addRow(data);
@@ -229,7 +231,7 @@ public class Parser {
                     }
                 }
 
-                List<String> urls = getAbsUrls(response.parse());
+                List<String> urls = getAbsUrls(response.parse(), punny, domain);
                 synchronized (sync) {
                     for (String _url : urls) {
                         queue.add(new vstu.gui.logic.parsing.UrlData(_url, lvl + 1));
@@ -239,17 +241,18 @@ public class Parser {
             }
 
         } catch (java.net.SocketTimeoutException exception) {
-            tableWorker.addRow(new vstu.gui.forms.main.UrlData(url, "timeout", lvl, "", "", 0, url));
+            tableWorker.addRow(new vstu.gui.forms.main.UrlData(url, "timeout", lvl, "", "", 0, url, OptionsProperties.timeout));
             exception.printStackTrace();
         } catch (UnknownHostException e) {
-            tableWorker.addRow(new vstu.gui.forms.main.UrlData(url, "unknown host", lvl, "", "", 0, url));
+            tableWorker.addRow(new vstu.gui.forms.main.UrlData(url, "unknown host", lvl, "", "", 0, url, -1));
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println(url_punny);
         }
 
     }
 
-    public List<String> getAbsUrls(Document doc) {
+    public List<String> getAbsUrls(Document doc, String punny, String originalDomain) {
         List<String> ur = new LinkedList<>();
 
         // url - селектор
@@ -312,7 +315,18 @@ public class Parser {
             }
         }
 
-        return ur;
+        // Убираем punnycode из строк и меням на нормальные Url
+        List<String> replaces = new ArrayList<>();
+
+        for (String str : ur) {
+            String new_str = str.replace(punny, originalDomain);
+            if (!new_str.contains("http://")) {
+                new_str = "http://" + new_str;
+            }
+            replaces.add(new_str);
+        }
+
+        return replaces;
     }
 
     /**
@@ -341,8 +355,45 @@ public class Parser {
     }
 
     private static String toPunnyCode(String url) {
-        String result = url;
-        // IDN.toASCI();  - только для русской части
-        return result;
+        // Только домен нужно конвертировать
+        String domain = getDomain(url);
+        String punny = null;
+        try {
+            punny = IDN.toASCII(domain);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(domain);
+        }
+        if (punny != null) {
+            return url.replace(domain, punny);
+        } else {
+            return domain;
+        }
+    }
+
+
+    private static String getPunnyPart(String url) {
+        // Только домен нужно конвертировать
+        String domain = getDomain(url);
+        String punny = null;
+        try {
+            punny = IDN.toASCII(domain);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(domain);
+        }
+        return punny;
+
+    }
+
+    private static String getDomain(String url) {
+        int le = "http://".length();
+        int start = url.indexOf("http://");
+        int end = url.indexOf("/", le);
+        if (end == -1) {
+            return url.substring(start + le);
+        } else {
+            return url.substring(start + le, end);
+        }
     }
 }

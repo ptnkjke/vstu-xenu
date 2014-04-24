@@ -47,6 +47,10 @@ public class UrlData {
      * Содержит в себе подстроку
      */
     private List<String> containsText = new ArrayList<>();
+    /**
+     * Время загрузки ресурса
+     */
+    private long timeLoad;
 
     public UrlData(String address,
                    String statusColumn,
@@ -54,7 +58,8 @@ public class UrlData {
                    String type,
                    String charset,
                    Integer size,
-                   String parentUrl) {
+                   String parentUrl,
+                   long timeLoad) {
 
         this.address = address;
         this.status = statusColumn;
@@ -63,6 +68,7 @@ public class UrlData {
         this.charset = charset;
         this.size = size;
         this.parentUrl = parentUrl;
+        this.timeLoad = timeLoad;
     }
 
     public String getAddress() {
@@ -135,5 +141,13 @@ public class UrlData {
 
     public void setContainsText(List<String> containsText) {
         this.containsText = containsText;
+    }
+
+    public long getTimeLoad() {
+        return timeLoad;
+    }
+
+    public void setTimeLoad(long timeLoad) {
+        this.timeLoad = timeLoad;
     }
 }

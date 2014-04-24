@@ -13,13 +13,12 @@ import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.*;
+import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.*;
 import javafx.util.Callback;
@@ -30,6 +29,7 @@ import vstu.gui.logic.export.HtmlExport;
 import vstu.gui.logic.parsing.Parser;
 
 import java.awt.*;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -62,6 +62,8 @@ public class MainFormController implements ITableWorker {
     private TableColumn<UrlData, String> charsetColumn;
     @FXML
     private TableColumn<UrlData, String> sizeColumn;
+    @FXML
+    private TableColumn<UrlData, String> timeLoad;
     @FXML
     private TextField urlTF;
     @FXML
@@ -101,6 +103,7 @@ public class MainFormController implements ITableWorker {
                         setText(empty ? null : item);
                     }
                 };
+
                 // При клике открытие браузера
                 cell.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                     @Override
@@ -141,8 +144,30 @@ public class MainFormController implements ITableWorker {
         typeColumn.setCellValueFactory(new PropertyValueFactory<UrlData, String>("type"));
         charsetColumn.setCellValueFactory(new PropertyValueFactory<UrlData, String>("charset"));
         sizeColumn.setCellValueFactory(new PropertyValueFactory<UrlData, String>("size"));
+        timeLoad.setCellValueFactory(new PropertyValueFactory<UrlData, String>("timeLoad"));
         tableTW.setItems(dataTables);
         tableTW.setPlaceholder(new Text("VSTU XENU 2014"));
+
+        // Добавляем полный обработчик правой кнопки мыши на таблицу
+        tableTW.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            private ContextMenu menu = null;
+
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if (menu != null) {
+                    menu.hide();
+                }
+
+                if (mouseEvent.getButton() != MouseButton.SECONDARY) {
+                    return;
+                }
+
+                // TODO: SCENE BUILDER по какой-то причине глючит
+                menu = getMainContextMenu();
+
+                menu.show(tableTW, mouseEvent.getScreenX(), mouseEvent.getScreenY());
+            }
+        });
     }
 
     public void onSaveAsHtmlMenuItemAction() {
@@ -393,5 +418,28 @@ public class MainFormController implements ITableWorker {
                 urlCountInQueueLabel.setText(Integer.toString(count));
             }
         });
+    }
+
+    private ContextMenu getMainContextMenu() {
+        ContextMenu cm = new ContextMenu();
+
+        MenuItem copyItem = new MenuItem("Copy");
+        cm.getItems().add(copyItem);
+
+        CheckMenuItem colItem = new CheckMenuItem("Show address");
+        colItem.setSelected(true);
+        cm.getItems().add(colItem);
+        colItem = new CheckMenuItem("Show status");
+        cm.getItems().add(colItem);
+        colItem = new CheckMenuItem("Show Lvl");
+        cm.getItems().add(colItem);
+        colItem = new CheckMenuItem("Show Type");
+        cm.getItems().add(colItem);
+        colItem = new CheckMenuItem("Show Size");
+        cm.getItems().add(colItem);
+        colItem = new CheckMenuItem("Show Time load");
+        cm.getItems().add(colItem);
+
+        return cm;
     }
 }
