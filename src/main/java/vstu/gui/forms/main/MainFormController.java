@@ -5,7 +5,7 @@ import javafx.beans.property.MapProperty;
 import javafx.beans.property.MapPropertyBase;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
+import javafx.event.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.JavaFXBuilderFactory;
@@ -18,9 +18,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.*;
+import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 import vstu.gui.data.OptionsProperties;
 import vstu.gui.forms.options.parserfilter.ParserFilterController;
@@ -29,7 +31,8 @@ import vstu.gui.logic.export.HtmlExport;
 import vstu.gui.logic.parsing.Parser;
 
 import java.awt.*;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
+import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -134,6 +137,7 @@ public class MainFormController implements ITableWorker {
                     }
                 });
 
+
                 cell.setStyle("-fx-text-fill: darkblue; -fx-underline: true");
                 return cell;
             }
@@ -148,26 +152,54 @@ public class MainFormController implements ITableWorker {
         tableTW.setItems(dataTables);
         tableTW.setPlaceholder(new Text("VSTU XENU 2014"));
 
-        // Добавляем полный обработчик правой кнопки мыши на таблицу
-        tableTW.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-            private ContextMenu menu = null;
 
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                if (menu != null) {
-                    menu.hide();
-                }
+        tableTW.addEventFilter(MouseEvent.MOUSE_CLICKED, new MContext());
 
-                if (mouseEvent.getButton() != MouseButton.SECONDARY) {
-                    return;
-                }
+        tableTW.getSelectionModel().setCellSelectionEnabled(true);
+        tableTW.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-                // TODO: SCENE BUILDER по какой-то причине глючит
-                menu = getMainContextMenu();
+    }
 
-                menu.show(tableTW, mouseEvent.getScreenX(), mouseEvent.getScreenY());
+    private class MContext implements EventHandler<MouseEvent> {
+        private ContextMenu menu = null;
+
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+            if (menu != null) {
+                menu.hide();
             }
-        });
+
+            if (mouseEvent.getButton() != MouseButton.SECONDARY) {
+                return;
+            }
+
+            final TableView tw = (TableView) mouseEvent.getSource();
+            // TODO: SCENE BUILDER по какой-то причине глючит
+
+            menu = new ContextMenu();
+            MenuItem copyItem = new MenuItem("Copy");
+
+            copyItem.setOnAction(new EventHandler<javafx.event.ActionEvent>() {
+                @Override
+                public void handle(javafx.event.ActionEvent actionEvent) {
+                    ObservableList<TablePosition> list = tw.getSelectionModel().getSelectedCells();
+
+                    StringBuilder sb = new StringBuilder();
+                    for (TablePosition tp : list) {
+                        sb.append(tp.getTableColumn().getCellData(tp.getRow()));
+                    }
+
+                    Clipboard clipboard = Clipboard.getSystemClipboard();
+                    ClipboardContent content = new ClipboardContent();
+                    content.putString(sb.toString());
+                    clipboard.setContent(content);
+                }
+            });
+
+            menu.getItems().add(copyItem);;
+
+            menu.show(tableTW, mouseEvent.getScreenX(), mouseEvent.getScreenY());
+        }
     }
 
     public void onSaveAsHtmlMenuItemAction() {
@@ -418,28 +450,5 @@ public class MainFormController implements ITableWorker {
                 urlCountInQueueLabel.setText(Integer.toString(count));
             }
         });
-    }
-
-    private ContextMenu getMainContextMenu() {
-        ContextMenu cm = new ContextMenu();
-
-        MenuItem copyItem = new MenuItem("Copy");
-        cm.getItems().add(copyItem);
-
-        CheckMenuItem colItem = new CheckMenuItem("Show address");
-        colItem.setSelected(true);
-        cm.getItems().add(colItem);
-        colItem = new CheckMenuItem("Show status");
-        cm.getItems().add(colItem);
-        colItem = new CheckMenuItem("Show Lvl");
-        cm.getItems().add(colItem);
-        colItem = new CheckMenuItem("Show Type");
-        cm.getItems().add(colItem);
-        colItem = new CheckMenuItem("Show Size");
-        cm.getItems().add(colItem);
-        colItem = new CheckMenuItem("Show Time load");
-        cm.getItems().add(colItem);
-
-        return cm;
     }
 }
