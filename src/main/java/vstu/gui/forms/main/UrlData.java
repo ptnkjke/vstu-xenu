@@ -5,7 +5,9 @@ package vstu.gui.forms.main;
  */
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Представление данных о url
@@ -42,11 +44,11 @@ public class UrlData {
     /**
      * Содержит теги, которые нужно
      */
-    private List<String> containsTag = new ArrayList<>();
+    private Map<String, String> containsTag = new HashMap<>();
     /**
      * Содержит в себе подстроку
      */
-    private List<String> containsText = new ArrayList<>();
+    private Map<String, Integer> containsText = new HashMap<>();
     /**
      * Время загрузки ресурса
      */
@@ -127,19 +129,19 @@ public class UrlData {
         this.parentUrl = parentUrl;
     }
 
-    public List<String> getContainsTag() {
+    public Map<String, String> getContainsTag() {
         return containsTag;
     }
 
-    public void setContainsTag(List<String> containsTag) {
+    public void setContainsTag(Map<String, String> containsTag) {
         this.containsTag = containsTag;
     }
 
-    public List<String> getContainsText() {
+    public Map<String, Integer> getContainsText() {
         return containsText;
     }
 
-    public void setContainsText(List<String> containsText) {
+    public void setContainsText(Map<String, Integer> containsText) {
         this.containsText = containsText;
     }
 

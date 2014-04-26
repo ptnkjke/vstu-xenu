@@ -1,6 +1,8 @@
 package vstu.gui.forms.main;
 
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.*;
@@ -150,7 +152,6 @@ public class MainFormController implements ITableWorker {
 
         tableTW.getSelectionModel().setCellSelectionEnabled(true);
         tableTW.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-
     }
 
     private class MContext implements EventHandler<MouseEvent> {
@@ -358,6 +359,46 @@ public class MainFormController implements ITableWorker {
             startButton.setText("Stop");
             dataTables.clear();
             isStartPasring = true;
+
+            // Добавляем столбцы, согласно фильтру
+            ///////////////////////////////////
+            for (final String string : ParserFilter.searchList) {
+                final TableColumn<UrlData, String> column = new TableColumn<>();
+                column.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<UrlData, String>, ObservableValue<String>>() {
+                    @Override
+                    public ObservableValue<String> call(TableColumn.CellDataFeatures<UrlData, String> urlDataStringCellDataFeatures) {
+                        final UrlData urlData = urlDataStringCellDataFeatures.getValue();
+
+                        Integer counter = urlData.getContainsText().get(string);
+                        String res = "";
+                        if (counter != null) {
+                            res = counter.toString();
+                        }
+                        return new SimpleStringProperty(res);
+                    }
+                });
+                column.setText(string);
+                tableTW.getColumns().add(column);
+            }
+
+            for (final String string : ParserFilter.tagList) {
+                TableColumn<UrlData, String> column = new TableColumn<>();
+                column.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<UrlData, String>, ObservableValue<String>>() {
+                    @Override
+                    public ObservableValue<String> call(TableColumn.CellDataFeatures<UrlData, String> urlDataStringCellDataFeatures) {
+                        final UrlData urlData = urlDataStringCellDataFeatures.getValue();
+
+                        String res = urlData.getContainsTag().get(string);
+                        if(res == null){
+                            res = "";
+                        }
+                        return new SimpleStringProperty(res);
+                    }
+                });
+                column.setText(string);
+                tableTW.getColumns().add(column);
+            }
+            ///////////////////////////////////
             parser.startCheck(url);
 
             // Запускаем таймер, который бы отслеживал состояние потоков для вывода соощений о завершении обработки

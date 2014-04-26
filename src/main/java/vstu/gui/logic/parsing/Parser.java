@@ -212,29 +212,26 @@ public class Parser {
             vstu.gui.forms.main.UrlData
                     data = new vstu.gui.forms.main.UrlData(url, code.toString(), lvl, type, charset, bytes, url, (time2 - time1) / 1000000);
 
-
-            tableWorker.addRow(data);
-
             // Это html-страница
             if (response.contentType().contains("text/html")) {
 
                 // Проверка на содержимое тега
                 Elements elements = response.parse().getAllElements();
                 for (String tag : ParserFilter.tagList) {
+                    StringBuilder sb = new StringBuilder();
                     for (Element element : elements) {
                         if (element.tagName().equals(tag)) {
-                            data.getContainsTag().add(tag);
-                            break;
+                            sb.append(element.text()).append("||");
                         }
                     }
+                    data.getContainsTag().put(tag, sb.toString());
                 }
 
-                // Проверка на содержимое текста
+                // Проверка на содержимое текста (подсчитываем количество)
                 String html_data = response.body();
                 for (String containsTest : ParserFilter.searchList) {
-                    if (html_data.contains(containsTest)) {
-                        data.getContainsText().add(containsTest);
-                    }
+                    int count = getCountIndexOf(html_data, containsTest);
+                    data.getContainsText().put(containsTest, count);
                 }
 
                 List<String> urls = getAbsUrls(response.parse(), punny, domain);
@@ -245,10 +242,10 @@ public class Parser {
                 }
                 tableWorker.updateCountUrlInQueue(queue.size());
             }
+            tableWorker.addRow(data);
 
         } catch (java.net.SocketTimeoutException exception) {
             tableWorker.addRow(new vstu.gui.forms.main.UrlData(url, "timeout", lvl, "", "", 0, url, OptionsProperties.timeout));
-            exception.printStackTrace();
         } catch (UnknownHostException e) {
             tableWorker.addRow(new vstu.gui.forms.main.UrlData(url, "unknown host", lvl, "", "", 0, url, -1));
         } catch (Exception e) {
@@ -419,5 +416,21 @@ public class Parser {
         } else {
             return url.substring(start + le, end);
         }
+    }
+
+    private static int getCountIndexOf(String inner, String founder) {
+        int count = 0;
+        int indexNext = 0;
+        while (indexNext != -1) {
+            int indexOf = inner.indexOf(founder, indexNext);
+            if (indexOf != -1) {
+                indexNext = indexOf + founder.length();
+                count++;
+            } else {
+                indexNext = indexOf;
+            }
+        }
+
+        return count;
     }
 }
