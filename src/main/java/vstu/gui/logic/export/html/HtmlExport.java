@@ -1,4 +1,4 @@
-package vstu.gui.logic.export;
+package vstu.gui.logic.export.html;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -45,7 +45,7 @@ public class HtmlExport {
         vc.put("txt_allcount", translationBundle.getString("htmlexport.txt_allcount"));
         vc.put("txt_brokencount", translationBundle.getString("htmlexport.txt_brokencount"));
 
-        Template t = ve.getTemplate("/vstu/gui/logic/export/html_template.vm");
+        Template t = ve.getTemplate("/vstu/gui/logic/export/html/html_template.vm");
 
         t.merge(vc, writer);
 
