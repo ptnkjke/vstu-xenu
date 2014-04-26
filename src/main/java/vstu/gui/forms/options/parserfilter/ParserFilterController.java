@@ -1,16 +1,20 @@
 package vstu.gui.forms.options.parserfilter;
 
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
 import javafx.util.Callback;
 import vstu.gui.data.ParserFilter;
+
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -29,30 +33,18 @@ public class ParserFilterController implements Initializable {
     private TextField excludeUrlTB;
 
     @FXML
-    private ListView<String> searchList;
+    private ListView<String> textSearchList;
     @FXML
-    private ListView<String> tagList;
+    private ListView<String> tagSearchList;
     @FXML
-    private ListView<String> includeList;
+    private TableView<ParserFilter.Data> includeUrlTable;
     @FXML
-    private ListView<String> excludeList;
+    private TableView<ParserFilter.Data> excludeUrlTable;
 
-
-    public ListView<String> getSearchList() {
-        return searchList;
-    }
-
-    public ListView<String> getTagList() {
-        return tagList;
-    }
-
-    public ListView<String> getIncludeList() {
-        return includeList;
-    }
-
-    public ListView<String> getExcludeList() {
-        return excludeList;
-    }
+    private ObservableList<String> textSearchItems = FXCollections.observableArrayList();
+    private ObservableList<String> tagSearchItems = FXCollections.observableArrayList();
+    private ObservableList<ParserFilter.Data> includeUrlItems = FXCollections.observableArrayList();
+    private ObservableList<ParserFilter.Data> excludeUrlItems = FXCollections.observableArrayList();
 
 
     public TextField getTextSearchTB() {
@@ -71,98 +63,118 @@ public class ParserFilterController implements Initializable {
         return excludeUrlTB;
     }
 
+    public TableView<ParserFilter.Data> getExcludeUrlTable() {
+        return excludeUrlTable;
+    }
+
+    public TableView<ParserFilter.Data> getIncludeUrlTable() {
+        return includeUrlTable;
+    }
+
+    public ListView<String> getTagSearchList() {
+        return tagSearchList;
+    }
+
+    public ListView<String> getTextSearchList() {
+        return textSearchList;
+    }
+
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        ObservableList<String> data = FXCollections.observableArrayList();
-        this.searchList.setItems(data);
-
-        data = FXCollections.observableArrayList();
-        this.tagList.setItems(data);
-        data = FXCollections.observableArrayList();
-        this.includeList.setItems(data);
-        data = FXCollections.observableArrayList();
-        this.excludeList.setItems(data);
-
-        this.searchList.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
-            @Override
-            public ListCell<String> call(ListView<String> stringListView) {
-                ListCell cell = new ListCell<String>() {
-                    @Override
-                    protected void updateItem(String s, boolean b) {
-                        super.updateItem(s, b);
-                        this.setText(s);
-                    }
-                };
-
-                cell.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
-                    @Override
-                    public void handle(KeyEvent keyEvent) {
-                        ListCell lc = (ListCell) keyEvent.getSource();
-                        ListView lv = lc.getListView();
-                        lv.getItems().remove(lc);
-                    }
-                });
-                return cell;
-            }
-        });
-
-        for (String string : ParserFilter.searchList) {
-            this.searchList.getItems().add(string);
-
+        for (String data : ParserFilter.searchList) {
+            textSearchItems.add(data);
         }
-        for (String string : ParserFilter.tagList) {
-            this.tagList.getItems().add(string);
+        for (String data : ParserFilter.tagList) {
+            tagSearchItems.add(data);
         }
-        for (String string : ParserFilter.includeList) {
-            this.includeList.getItems().add(string);
+        for (ParserFilter.Data data : ParserFilter.includeList) {
+            includeUrlItems.add(data);
         }
-        for (String string : ParserFilter.exludeList) {
-            this.excludeList.getItems().add(string);
+        for (ParserFilter.Data data : ParserFilter.exludeList) {
+            excludeUrlItems.add(data);
+        }
+
+        textSearchList.setItems(textSearchItems);
+        tagSearchList.setItems(tagSearchItems);
+        includeUrlTable.setItems(includeUrlItems);
+        excludeUrlTable.setItems(excludeUrlItems);
+
+        includeUrlTable.setPlaceholder(new Text(""));
+        excludeUrlTable.setPlaceholder(new Text(""));
+
+        TableColumn<ParserFilter.Data, String> column = (TableColumn<ParserFilter.Data, String>) includeUrlTable.getColumns().get(0);
+        column.setCellValueFactory(new PropertyValueFactory<ParserFilter.Data, String>("data"));
+
+        column = (TableColumn<ParserFilter.Data, String>) excludeUrlTable.getColumns().get(0);
+        column.setCellValueFactory(new PropertyValueFactory<ParserFilter.Data, String>("data"));
+
+        TableColumn<ParserFilter.Data, CheckBox> column2 = (TableColumn<ParserFilter.Data, CheckBox>) includeUrlTable.getColumns().get(1);
+        column2.setCellValueFactory(new CheckBoxColumn());
+
+        column2 = (TableColumn<ParserFilter.Data, CheckBox>) excludeUrlTable.getColumns().get(1);
+        column2.setCellValueFactory(new CheckBoxColumn());
+    }
+
+    private class CheckBoxColumn implements Callback<TableColumn.CellDataFeatures<ParserFilter.Data, CheckBox>, ObservableValue<CheckBox>> {
+
+        @Override
+        public ObservableValue<CheckBox> call(TableColumn.CellDataFeatures<ParserFilter.Data, CheckBox> dataCheckBoxCellDataFeatures) {
+            final CheckBox checkBox = new CheckBox();
+            final ParserFilter.Data data = dataCheckBoxCellDataFeatures.getValue();
+            checkBox.addEventFilter(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    data.setRegexp(checkBox.isSelected());
+                }
+            });
+
+            checkBox.setSelected(data.isRegexp());
+            return new SimpleObjectProperty<CheckBox>(checkBox);
         }
     }
 
     public void save() {
         ParserFilter.searchList.clear();
-        for (String string : this.searchList.getItems()) {
-            ParserFilter.searchList.add(string);
+        for (String data : this.textSearchList.getItems()) {
+            ParserFilter.searchList.add(data);
         }
         ParserFilter.tagList.clear();
-        for (String string : this.tagList.getItems()) {
-            ParserFilter.tagList.add(string);
+        for (String data : this.tagSearchList.getItems()) {
+            ParserFilter.tagList.add(data);
         }
         ParserFilter.includeList.clear();
-        for (String string : this.includeList.getItems()) {
-            ParserFilter.includeList.add(string);
+        for (ParserFilter.Data data : includeUrlItems) {
+            ParserFilter.includeList.add(data);
         }
         ParserFilter.exludeList.clear();
-        for (String string : this.excludeList.getItems()) {
-            ParserFilter.exludeList.add(string);
+        for (ParserFilter.Data data : excludeUrlItems) {
+            ParserFilter.exludeList.add(data);
         }
     }
 
     public void onAddTextSearchBAction() {
         if (textSearchTB.getText().length() > 0) {
-            searchList.getItems().add(textSearchTB.getText());
+            textSearchList.getItems().add(textSearchTB.getText());
             textSearchTB.setText("");
         }
     }
 
     public void onAddTagSearchB() {
         if (tagSearchTB.getText().length() > 0) {
-            tagList.getItems().add(tagSearchTB.getText());
+            tagSearchList.getItems().add(tagSearchTB.getText());
             tagSearchTB.setText("");
         }
     }
 
     public void onAddIncludeUrlSearchB() {
         if (includeUrlTB.getText().length() > 0) {
-            includeList.getItems().add(includeUrlTB.getText());
+            includeUrlTable.getItems().add(new ParserFilter.Data(includeUrlTB.getText()));
             includeUrlTB.setText("");
         }
     }
 
     public void onAddExcludeUrlSearchB() {
         if (excludeUrlTB.getText().length() > 0) {
-            excludeList.getItems().add(excludeUrlTB.getText());
+            excludeUrlTable.getItems().add(new ParserFilter.Data(excludeUrlTB.getText()));
             excludeUrlTB.setText("");
         }
     }

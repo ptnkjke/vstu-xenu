@@ -5,7 +5,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox prefHeight="493.0" prefWidth="369.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vstu.gui.forms.options.parserfilter.ParserFilterController">
+<VBox prefHeight="478.0" prefWidth="374.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vstu.gui.forms.options.parserfilter.ParserFilterController">
     <children>
         <VBox prefHeight="120.0" prefWidth="356.0">
             <children>
@@ -32,11 +32,7 @@
 <VBox.margin>
 <Insets top="2.0" />
 </VBox.margin>
-                </HBox>
-                <ListView fx:id="searchList" editable="true" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="80.0" prefWidth="356.0" VBox.vgrow="SOMETIMES">
-<VBox.margin>
-<Insets left="2.0" right="2.0" top="5.0" />
-</VBox.margin></ListView>
+                </HBox><ListView fx:id="textSearchList" prefHeight="200.0" prefWidth="200.0" />
             </children>
         </VBox>
         <VBox prefHeight="120.0" prefWidth="100.0">
@@ -58,11 +54,7 @@
                             </children>
                         </HBox>
                     </children>
-                </HBox>
-                <ListView fx:id="tagList" editable="true" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="80.0" prefWidth="356.0" VBox.vgrow="SOMETIMES">
-<VBox.margin>
-<Insets left="2.0" right="2.0" top="5.0" />
-</VBox.margin></ListView>
+                </HBox><ListView fx:id="tagSearchList" prefHeight="200.0" prefWidth="200.0" />
             </children>
         </VBox>
         <VBox prefHeight="120.0" prefWidth="100.0">
@@ -84,11 +76,15 @@
                             </children>
                         </HBox>
                     </children>
-                </HBox>
-                <ListView fx:id="includeList" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="80.0" prefWidth="356.0" VBox.vgrow="SOMETIMES">
-<VBox.margin>
-<Insets left="2.0" right="2.0" top="5.0" />
-</VBox.margin></ListView>
+                </HBox><TableView fx:id="includeUrlTable" prefHeight="200.0" prefWidth="200.0">
+  <columns>
+    <TableColumn prefWidth="250.0" text="Value" />
+    <TableColumn prefWidth="122.0" text="Regexp" />
+  </columns>
+<columnResizePolicy>
+<TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+</columnResizePolicy>
+</TableView>
             </children>
         </VBox>
         <VBox prefHeight="120.0" prefWidth="327.0">
@@ -110,11 +106,15 @@
                             </children>
                         </HBox>
                     </children>
-                </HBox>
-                <ListView fx:id="excludeList" editable="true" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="80.0" prefWidth="200.0" VBox.vgrow="SOMETIMES">
-<VBox.margin>
-<Insets left="2.0" right="2.0" top="5.0" />
-</VBox.margin></ListView>
+                </HBox><TableView fx:id="excludeUrlTable" prefHeight="200.0" prefWidth="200.0">
+  <columns>
+    <TableColumn prefWidth="250.0" text="Value" />
+    <TableColumn prefWidth="122.0" text="Regexp" />
+  </columns>
+<columnResizePolicy>
+<TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+</columnResizePolicy>
+</TableView>
             </children>
         </VBox>
     </children>

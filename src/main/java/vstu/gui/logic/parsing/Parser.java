@@ -184,12 +184,16 @@ public class Parser {
         // Добавляем строку в таблицу
         checkedUrlList.add(url);
 
+        // Домен
         String domain = getDomain(url);
+        // Домен заменённый на punny
         String punny = getPunnyPart(url);
+
         String url_punny = toPunnyCode(url);
 
         Connection.Response response;
         try {
+            long time1 = System.nanoTime();
             response = Jsoup.connect(url_punny).
                     ignoreContentType(true).
                     ignoreHttpErrors(true).
@@ -198,13 +202,15 @@ public class Parser {
                     .followRedirects(true)
                     .execute();
 
+            long time2 = System.nanoTime();
+
             Integer code = response.statusCode();
             Integer bytes = response.bodyAsBytes().length;
             String type = response.contentType();
             String charset = response.charset();
 
             vstu.gui.forms.main.UrlData
-                    data = new vstu.gui.forms.main.UrlData(url, code.toString(), lvl, type, charset, bytes, url, 0);
+                    data = new vstu.gui.forms.main.UrlData(url, code.toString(), lvl, type, charset, bytes, url, (time2 - time1) / 1000000);
 
 
             tableWorker.addRow(data);
@@ -288,37 +294,55 @@ public class Parser {
         }
 
         // Фильруем список на ссылки исключённые из обработки
-        for (String exclude : ParserFilter.exludeList) {
-            Pattern pattern = Pattern.compile(exclude);
+        for (ParserFilter.Data exclude : ParserFilter.exludeList) {
+            Pattern pattern = Pattern.compile(exclude.getData());
 
             Iterator<String> iterator = ur.iterator();
             // Ссылка есть в исключающем списке - удаляем
             while (iterator.hasNext()) {
                 String current = iterator.next();
-                if (pattern.matcher(current).find()) {
-                    iterator.remove();
+                if (!exclude.isRegexp()) {
+                    if (pattern.matcher(current).find()) {
+                        iterator.remove();
+                    }
+                } else {
+                    if (pattern.matcher(current).matches()) {
+                        iterator.remove();
+                    }
                 }
             }
         }
 
+
         // Фильруем список на ссылки, который должны быть в обработки
-        for (String include : ParserFilter.includeList) {
+        for (ParserFilter.Data include : ParserFilter.includeList) {
             Iterator<String> iterator = ur.iterator();
 
-            Pattern pattern = Pattern.compile(include);
+            Pattern pattern = Pattern.compile(include.getData());
             // Ссылки нет во включающем списке - удалям
             while (iterator.hasNext()) {
                 String current = iterator.next();
-                if (!pattern.matcher(current).find()) {
-                    iterator.remove();
+                if (!include.isRegexp()) {
+                    if (!pattern.matcher(current).find()) {
+                        iterator.remove();
+                    }
+                } else {
+                    if (!pattern.matcher(current).matches()) {
+                        iterator.remove();
+                    }
                 }
             }
         }
+
 
         // Убираем punnycode из строк и меням на нормальные Url
         List<String> replaces = new ArrayList<>();
 
-        for (String str : ur) {
+        for (
+                String str
+                : ur)
+
+        {
             String new_str = str.replace(punny, originalDomain);
             if (!new_str.contains("http://")) {
                 new_str = "http://" + new_str;

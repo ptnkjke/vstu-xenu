@@ -25,6 +25,7 @@ import javafx.stage.*;
 import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 import vstu.gui.data.OptionsProperties;
+import vstu.gui.data.ParserFilter;
 import vstu.gui.forms.options.parserfilter.ParserFilterController;
 import vstu.gui.forms.options.preferences.PreferencesController;
 import vstu.gui.logic.export.HtmlExport;
@@ -196,7 +197,8 @@ public class MainFormController implements ITableWorker {
                 }
             });
 
-            menu.getItems().add(copyItem);;
+            menu.getItems().add(copyItem);
+            ;
 
             menu.show(tableTW, mouseEvent.getScreenX(), mouseEvent.getScreenY());
         }
@@ -286,31 +288,31 @@ public class MainFormController implements ITableWorker {
         final ParserFilterController controller = finalFxmlLoader.getController();
 
         // Удаление строки по нажатию DELETE
-        controller.getIncludeList().getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.DELETE), new Runnable() {
+        controller.getIncludeUrlTable().getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.DELETE), new Runnable() {
             @Override
             public void run() {
 
-                int num = controller.getIncludeList().getSelectionModel().getSelectedIndex();
-                if (num != -1 && controller.getIncludeList().isFocused()) {
-                    controller.getIncludeList().getItems().remove(num);
+                int num = controller.getIncludeUrlTable().getSelectionModel().getSelectedIndex();
+                if (num != -1 && controller.getIncludeUrlTable().isFocused()) {
+                    controller.getIncludeUrlTable().getItems().remove(num);
                 }
-                num = controller.getExcludeList().getSelectionModel().getSelectedIndex();
-                if (num != -1 && controller.getExcludeList().isFocused()) {
-                    controller.getExcludeList().getItems().remove(num);
+                num = controller.getExcludeUrlTable().getSelectionModel().getSelectedIndex();
+                if (num != -1 && controller.getExcludeUrlTable().isFocused()) {
+                    controller.getExcludeUrlTable().getItems().remove(num);
                 }
-                num = controller.getSearchList().getSelectionModel().getSelectedIndex();
-                if (num != -1 && controller.getSearchList().isFocused()) {
-                    controller.getSearchList().getItems().remove(num);
+                num = controller.getTagSearchList().getSelectionModel().getSelectedIndex();
+                if (num != -1 && controller.getTagSearchList().isFocused()) {
+                    controller.getTagSearchList().getItems().remove(num);
                 }
-                num = controller.getTagList().getSelectionModel().getSelectedIndex();
-                if (num != -1 && controller.getTagList().isFocused()) {
-                    controller.getTagList().getItems().remove(num);
+                num = controller.getTextSearchList().getSelectionModel().getSelectedIndex();
+                if (num != -1 && controller.getTextSearchList().isFocused()) {
+                    controller.getTextSearchList().getItems().remove(num);
                 }
             }
         });
 
         // Добавление записи в список по нажатию ENTER
-        controller.getIncludeList().getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.ENTER), new Runnable() {
+        controller.getIncludeUrlTable().getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.ENTER), new Runnable() {
             @Override
             public void run() {
 
@@ -319,7 +321,7 @@ public class MainFormController implements ITableWorker {
                 if (tf.isFocused()) {
                     String text = tf.getText();
                     if (!text.isEmpty()) {
-                        controller.getExcludeList().getItems().add(text);
+                        controller.getExcludeUrlTable().getItems().add(new ParserFilter.Data(text));
                         tf.setText("");
                     }
                 }
@@ -328,7 +330,7 @@ public class MainFormController implements ITableWorker {
                 if (tf.isFocused()) {
                     String text = tf.getText();
                     if (!text.isEmpty()) {
-                        controller.getIncludeList().getItems().add(text);
+                        controller.getIncludeUrlTable().getItems().add(new ParserFilter.Data(text));
                         tf.setText("");
                     }
                 }
@@ -337,7 +339,7 @@ public class MainFormController implements ITableWorker {
                 if (tf.isFocused()) {
                     String text = tf.getText();
                     if (!text.isEmpty()) {
-                        controller.getTagList().getItems().add(text);
+                        controller.getTagSearchList().getItems().add(text);
                         tf.setText("");
                     }
                 }
@@ -346,7 +348,7 @@ public class MainFormController implements ITableWorker {
                 if (tf.isFocused()) {
                     String text = tf.getText();
                     if (!text.isEmpty()) {
-                        controller.getSearchList().getItems().add(text);
+                        controller.getTextSearchList().getItems().add(text);
                         tf.setText("");
                     }
                 }
