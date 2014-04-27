@@ -10,27 +10,27 @@ public class OptionsProperties {
     /**
      * Получение всех ссылок на сайте
      */
-    public static boolean urlSelectorEnabled;
+    public static boolean urlSelectorEnabled = true;
     /**
      * Получение всех изображений
      */
-    public static boolean imgSelectorEnabled;
+    public static boolean imgSelectorEnabled = true;
     /**
      * Получение всех CSS
      */
-    public static boolean cssSelectorEnabled;
+    public static boolean cssSelectorEnabled = true;
     /**
      * Получение всех JS на сайте
      */
-    public static boolean jsSelectorEnabled;
+    public static boolean jsSelectorEnabled = true;
     /**
      * Таймаут ожидания запроса
      */
-    public static Integer timeout;
+    public static Integer timeout = 1000;
     /**
      * Максимальный уровнь захода по ссылкам
      */
-    public static Integer maxLvl;
+    public static Integer maxLvl = 100;
     /**
      * Исключение повторяющихся ссылок
      */
@@ -46,7 +46,7 @@ public class OptionsProperties {
     /**
      * Язык интерфейса программы
      */
-    public static Language language;
+    public static Language language = Language.ENGLISH;
 
     /**
      * Количество дополнительных поток (1 + это число), которые будут парсить страницу
