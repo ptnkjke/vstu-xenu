@@ -8,6 +8,7 @@ import org.jsoup.select.Elements;
 import vstu.gui.data.OptionsProperties;
 import vstu.gui.data.ParserFilter;
 import vstu.gui.forms.main.ITableWorker;
+import vstu.gui.forms.main.UrlData;
 
 import java.net.IDN;
 import java.net.UnknownHostException;
@@ -26,7 +27,7 @@ public class Parser {
     /**
      * Очередь ссылок на проверки
      */
-    private Queue<vstu.gui.logic.parsing.UrlData> queue = new LinkedList<vstu.gui.logic.parsing.UrlData>();
+    private Queue<UrlDataQ> queue = new LinkedList<UrlDataQ>();
     /**
      * Объект для синхронизации потоков
      */
@@ -85,7 +86,7 @@ public class Parser {
 
         @Override
         public void run() {
-            checkUrl(url, 0);
+            checkUrl(url, 0, null);
             stop = true;
         }
 
@@ -109,15 +110,15 @@ public class Parser {
 
         @Override
         public void run() {
-            while (true && !stop) {
+            while (!stop) {
 
                 while (!queue.isEmpty()) {
-                    vstu.gui.logic.parsing.UrlData ud = null;
+                    UrlDataQ ud = null;
 
                     synchronized (sync) {
                         ud = queue.poll();
                     }
-                    checkUrl(ud.getUrl(), ud.getLvl());
+                    checkUrl(ud.getUrl(), ud.getLvl(), ud.getParent());
                 }
 
                 try {
@@ -142,10 +143,11 @@ public class Parser {
     /**
      * Проверка url
      *
-     * @param url Необходимы url
-     * @param lvl Текущая глубина захода
+     * @param url    Необходимы url
+     * @param lvl    Текущая глубина захода
+     * @param parent Родительский элемент
      */
-    public void checkUrl(String url, final int lvl) {
+    public void checkUrl(String url, final int lvl, UrlData parent) {
         // Мы пытаемся остановить?
         Thread thread = Thread.currentThread();
         if (thread instanceof OtherThread) {
@@ -166,6 +168,11 @@ public class Parser {
             url = sb.toString();
         }
 
+        // Имеет ли ссылка якорь? Чтобы ссылки http://news.yandex.ru/?lang=ru и http://news.yandex.ru/?lang=ru#abcde не были одинаковыми
+        if (url.contains("#")) {
+            url = url.split("#")[0];
+        }
+
         // Ссылка на том же сайте? (Чтобы за пределы сайта не расползаться)
         if (!OptionsProperties.movingBeyond && !url.contains(mainUrl)) {
             return;
@@ -181,11 +188,17 @@ public class Parser {
             return;
         }
 
+        // Домен
+        String domain = getDomain(url);
+
+        if (OptionsProperties.movingSubDomain) {
+            // TODO: Поддомен?
+        }
+
+
         // Добавляем строку в таблицу
         checkedUrlList.add(url);
 
-        // Домен
-        String domain = getDomain(url);
         // Домен заменённый на punny
         String punny = getPunnyPart(url);
 
@@ -209,8 +222,7 @@ public class Parser {
             String type = response.contentType();
             String charset = response.charset();
 
-            vstu.gui.forms.main.UrlData
-                    data = new vstu.gui.forms.main.UrlData(url, code.toString(), lvl, type, charset, bytes, url, (time2 - time1) / 1000000);
+            UrlData data = new UrlData(url, code.toString(), lvl, type, charset, bytes, url, (time2 - time1) / 1000000);
 
             // Это html-страница
             if (response.contentType().contains("text/html")) {
@@ -234,15 +246,20 @@ public class Parser {
                     data.getContainsText().put(containsTest, count);
                 }
 
-                List<String> urls = getAbsUrls(response.parse(), punny, domain);
+                List<String> urls = getAbsUrls(response.parse(), punny, domain, lvl);
                 synchronized (sync) {
                     for (String _url : urls) {
-                        queue.add(new vstu.gui.logic.parsing.UrlData(_url, lvl + 1));
+                        queue.add(new UrlDataQ(_url, lvl + 1, data));
                     }
                 }
                 tableWorker.updateCountUrlInQueue(queue.size());
             }
             tableWorker.addRow(data);
+
+            // Добавляем в родителя ребёнка
+            if (parent != null) {
+                parent.addChildren(data);
+            }
 
         } catch (java.net.SocketTimeoutException exception) {
             tableWorker.addRow(new vstu.gui.forms.main.UrlData(url, "timeout", lvl, "", "", 0, url, OptionsProperties.timeout));
@@ -255,7 +272,7 @@ public class Parser {
 
     }
 
-    public List<String> getAbsUrls(Document doc, String punny, String originalDomain) {
+    public List<String> getAbsUrls(Document doc, String punny, String originalDomain, int lvl) {
         List<String> ur = new LinkedList<>();
 
         // url - селектор
@@ -290,42 +307,48 @@ public class Parser {
             }
         }
 
-        // Фильруем список на ссылки исключённые из обработки
-        for (ParserFilter.Data exclude : ParserFilter.exludeList) {
-            Pattern pattern = Pattern.compile(exclude.getData());
+        // На первой странице игнорируем исключающие ссылки
+        if (lvl != 0) {
+            // Фильруем список на ссылки исключённые из обработки
+            for (ParserFilter.Data exclude : ParserFilter.exludeList) {
+                Pattern pattern = Pattern.compile(exclude.getData());
 
-            Iterator<String> iterator = ur.iterator();
-            // Ссылка есть в исключающем списке - удаляем
-            while (iterator.hasNext()) {
-                String current = iterator.next();
-                if (!exclude.isRegexp()) {
-                    if (pattern.matcher(current).find()) {
-                        iterator.remove();
-                    }
-                } else {
-                    if (pattern.matcher(current).matches()) {
-                        iterator.remove();
+                Iterator<String> iterator = ur.iterator();
+                // Ссылка есть в исключающем списке - удаляем
+                while (iterator.hasNext()) {
+                    String current = iterator.next();
+                    if (!exclude.isRegexp()) {
+                        if (pattern.matcher(current).find()) {
+                            iterator.remove();
+                        }
+                    } else {
+                        if (pattern.matcher(current).matches()) {
+                            iterator.remove();
+                        }
                     }
                 }
             }
         }
 
 
-        // Фильруем список на ссылки, который должны быть в обработки
-        for (ParserFilter.Data include : ParserFilter.includeList) {
-            Iterator<String> iterator = ur.iterator();
+        // На первой странице игнорируем исключающие ссылки
+        if (lvl != 0) {
+            // Фильруем список на ссылки, который должны быть в обработки
+            for (ParserFilter.Data include : ParserFilter.includeList) {
+                Iterator<String> iterator = ur.iterator();
 
-            Pattern pattern = Pattern.compile(include.getData());
-            // Ссылки нет во включающем списке - удалям
-            while (iterator.hasNext()) {
-                String current = iterator.next();
-                if (!include.isRegexp()) {
-                    if (!pattern.matcher(current).find()) {
-                        iterator.remove();
-                    }
-                } else {
-                    if (!pattern.matcher(current).matches()) {
-                        iterator.remove();
+                Pattern pattern = Pattern.compile(include.getData());
+                // Ссылки нет во включающем списке - удалям
+                while (iterator.hasNext()) {
+                    String current = iterator.next();
+                    if (!include.isRegexp()) {
+                        if (!pattern.matcher(current).find()) {
+                            iterator.remove();
+                        }
+                    } else {
+                        if (!pattern.matcher(current).matches()) {
+                            iterator.remove();
+                        }
                     }
                 }
             }
@@ -335,11 +358,7 @@ public class Parser {
         // Убираем punnycode из строк и меням на нормальные Url
         List<String> replaces = new ArrayList<>();
 
-        for (
-                String str
-                : ur)
-
-        {
+        for (String str : ur) {
             String new_str = str.replace(punny, originalDomain);
             if (!new_str.contains("http://")) {
                 new_str = "http://" + new_str;
@@ -359,6 +378,12 @@ public class Parser {
         return queue.size() == 0;
     }
 
+    /**
+     * Получение стартового домена
+     *
+     * @param url
+     * @return
+     */
     private static String getMainUrl(String url) {
         int startIndexof = url.indexOf("//");
         if (startIndexof == -1) {

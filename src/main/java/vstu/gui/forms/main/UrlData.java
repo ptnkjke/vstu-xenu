@@ -4,10 +4,7 @@ package vstu.gui.forms.main;
  * Created by Lopatin on 22.03.14.
  */
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Представление данных о url
@@ -53,6 +50,8 @@ public class UrlData {
      * Время загрузки ресурса
      */
     private long timeLoad;
+
+    private List<UrlData> childrens = Collections.synchronizedList(new ArrayList<UrlData>());
 
     public UrlData(String address,
                    String statusColumn,
@@ -151,5 +150,21 @@ public class UrlData {
 
     public void setTimeLoad(long timeLoad) {
         this.timeLoad = timeLoad;
+    }
+
+    public List<UrlData> getChildrens() {
+        return childrens;
+    }
+
+    public void setChildrens(List<UrlData> childrens) {
+        this.childrens = childrens;
+    }
+
+    /**
+     * Добавление ребёнка
+     * @param children
+     */
+    public synchronized void addChildren(UrlData children) {
+        childrens.add(children);
     }
 }

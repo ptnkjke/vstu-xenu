@@ -72,6 +72,11 @@ public class MainFormController implements ITableWorker {
     private Button startButton;
 
     /**
+     * Главный элемент
+     */
+    private UrlData root;
+
+    /**
      * Начался ли разбор страни?
      */
     private boolean isStartPasring = false;
@@ -389,7 +394,7 @@ public class MainFormController implements ITableWorker {
                         final UrlData urlData = urlDataStringCellDataFeatures.getValue();
 
                         String res = urlData.getContainsTag().get(string);
-                        if(res == null){
+                        if (res == null) {
                             res = "";
                         }
                         return new SimpleStringProperty(res);
@@ -471,6 +476,10 @@ public class MainFormController implements ITableWorker {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
+                if (root != null) {
+                    root = dt;
+                }
+
                 dataTables.add(dt);
                 urlCountInTable.setText(Integer.toString(dataTables.size()));
             }
