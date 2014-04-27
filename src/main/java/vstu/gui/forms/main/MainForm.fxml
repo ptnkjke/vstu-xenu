@@ -25,7 +25,7 @@
   </items>
 </Menu><Menu mnemonicParsing="false" text="%mainform.menubar.options">
   <items>
-    <MenuItem fx:id="preferencesMenuItem" mnemonicParsing="false" onAction="#onPreferencesMenuItemAction" text="%mainform.menubar.options.preferences" /><MenuItem mnemonicParsing="false" onAction="#onParserFilterItemAction" text="%mainform.menubar.options.parserfilters" />
+    <MenuItem fx:id="preferencesMenuItem" mnemonicParsing="false" onAction="#onPreferencesMenuItemAction" text="%mainform.menubar.options.preferences" /><MenuItem mnemonicParsing="false" onAction="#onParserFilterItemAction" text="%mainform.menubar.options.parserfilters" /><MenuItem mnemonicParsing="false" onAction="#onColumnVisibleAction" text="Column visible" />
   </items>
 </Menu>
     <Menu mnemonicParsing="false" text="%mainform.menubar.help">

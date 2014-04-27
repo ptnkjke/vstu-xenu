@@ -24,6 +24,7 @@ import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 import vstu.gui.data.OptionsProperties;
 import vstu.gui.data.ParserFilter;
+import vstu.gui.forms.main.tableoptions.TableColumnOption;
 import vstu.gui.forms.options.parserfilter.ParserFilterController;
 import vstu.gui.logic.export.html.HtmlExport;
 import vstu.gui.logic.parsing.Parser;
@@ -452,6 +453,10 @@ public class MainFormController implements ITableWorker {
         }
     }
 
+    public void onColumnVisibleAction() {
+        TableColumnOption.show(tableTW);
+    }
+
     private void onStop() {
         for (Thread thread : parser.threads) {
             thread.interrupt();
@@ -495,4 +500,5 @@ public class MainFormController implements ITableWorker {
             }
         });
     }
+
 }
