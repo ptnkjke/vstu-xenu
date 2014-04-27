@@ -54,8 +54,6 @@ public class TableColumnOption {
             if (column.isVisible()) {
                 cb.setSelected(column.isVisible());
             }
-
-            // TODO: Добавить листенеры на переключение selected
             cb.addEventFilter(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
