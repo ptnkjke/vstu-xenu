@@ -5,11 +5,13 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import sun.text.resources.FormatData_es_MX;
 import vstu.gui.data.OptionsProperties;
 
+import javax.imageio.ImageTranscoder;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -55,6 +57,7 @@ public class MainForm extends Application {
         });
 
         root.getStylesheets().add("/vstu/gui/forms/table.css");
+        stage.getIcons().add(new Image("icon.png"));
         stage.show();
 
     }

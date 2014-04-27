@@ -6,7 +6,7 @@
 
     <groupId>VSTU-XENU</groupId>
     <artifactId>VSTU-XENU</artifactId>
-    <version>1.2</version>
+    <version>1.3.0</version>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -90,6 +90,47 @@
                         </goals>
                         <configuration>
                             <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>com.akathist.maven.plugins.launch4j</groupId>
+                <artifactId>launch4j-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>l4j-clui</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>launch4j</goal>
+                        </goals>
+                        <configuration>
+                            <headerType>gui</headerType>
+                            <outfile>target/vstu.exe</outfile>
+                            <jar>target/${project.artifactId}-${project.version}.jar</jar>
+                            <errTitle>VSTU</errTitle>
+                            <icon>src/main/resources/favicon.ico</icon>
+                            <classPath>
+                                <mainClass>vstu.gui.forms.main.MainForm</mainClass>
+                                <addDependencies>true</addDependencies>
+                                <preCp>anything</preCp>
+                            </classPath>
+                            <jre>
+                                <minVersion>1.7.0</minVersion>
+                            </jre>
+                            <versionInfo>
+                                <fileVersion>${project.version}.0</fileVersion>
+                                <txtFileVersion>${project.version}</txtFileVersion>
+                                <fileDescription>ptnkjke@gmail.com</fileDescription>
+                                <copyright>ptnkjke@gmail.com</copyright>
+                                <productVersion>${project.version}.0</productVersion>
+                                <txtProductVersion>ptnkjke@gmail.com</txtProductVersion>
+                                <companyName>ptnkjke@gmail.com</companyName>
+                                <productName>ptnkjke@gmail.com</productName>
+                                <internalName>ptnkjke@gmail.com</internalName>
+                                <originalFilename>xenu.exe</originalFilename>
+                            </versionInfo>
                         </configuration>
                     </execution>
                 </executions>

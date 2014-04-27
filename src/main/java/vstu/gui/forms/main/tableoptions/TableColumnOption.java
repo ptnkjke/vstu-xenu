@@ -10,6 +10,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,6 +39,7 @@ public class TableColumnOption {
 
         stage.setMaxWidth(100);
         stage.setResizable(true);
+        stage.initStyle(StageStyle.UTILITY);
         stage.show();
     }
 
