@@ -32,7 +32,7 @@ public class TableColumnOption {
         GridPane gridPane = getTableColumnOptionGrid(columns);
 
 
-        Scene scene = new Scene(gridPane, 100, 500);
+        Scene scene = new Scene(gridPane, 150, 500);
 
         Stage stage = new Stage();
         stage.setScene(scene);

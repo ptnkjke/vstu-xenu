@@ -21,7 +21,7 @@
 <children><MenuBar>
   <menus><Menu mnemonicParsing="false" text="%mainform.menubar.file">
   <items>
-    <MenuItem id="saveAsHtml" mnemonicParsing="false" onAction="#onSaveAsHtmlMenuItemAction" text="%mainform.menubar.file.saveashtml" />
+    <MenuItem id="saveAsHtml" mnemonicParsing="false" onAction="#onSaveAsHtmlMenuItemAction" text="%mainform.menubar.file.saveashtml" /><MenuItem mnemonicParsing="false" onAction="#onSaveSitemapItemAction" text="Save sitemap" />
   </items>
 </Menu><Menu mnemonicParsing="false" text="%mainform.menubar.options">
   <items>

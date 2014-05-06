@@ -27,8 +27,11 @@ import vstu.gui.data.ParserFilter;
 import vstu.gui.forms.main.tableoptions.TableColumnOption;
 import vstu.gui.forms.options.parserfilter.ParserFilterController;
 import vstu.gui.logic.export.html.HtmlExport;
+import vstu.gui.logic.export.sitemap.SiteMapGen;
 import vstu.gui.logic.parsing.Parser;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -223,6 +226,35 @@ public class MainFormController implements ITableWorker {
         // Сохранить в файл
         HtmlExport export = new HtmlExport();
         export.createResultDoc(dataTables, file);
+    }
+
+    public void onSaveSitemapItemAction(){
+        // Если обработка завершена
+
+        // Показать диалог для сохранения файла
+        FileChooser chooser = new FileChooser();
+        chooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("XML", "*.xml"));
+
+        File file = chooser.showSaveDialog(null);
+
+        if (file == null) {
+            return;
+        }
+
+        if (!file.getName().contains(".")) {
+            file = new File(file.getAbsolutePath() + ".xml");
+        }
+
+        // Сохранить в файл
+
+        SiteMapGen siteMapGen = new SiteMapGen();
+        try {
+            siteMapGen.createSiteMap(file, dataTables);
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (TransformerException e) {
+            e.printStackTrace();
+        }
     }
 
     public void onPreferencesMenuItemAction() {
