@@ -36,9 +36,9 @@ public class SiteMapGen {
                 Element url = doc.createElement("url");
                 Element loc = doc.createElement("loc");
 
-                // TODO: Требуется некоторая обработка предварительная для url
-
-                loc.setTextContent(urlData.getAddress());
+                // Маскирование символа, который может встретиться
+                String prepared = urlData.getAddress().replace("&","&amp;");
+                loc.setTextContent(prepared);
 
                 url.appendChild(loc);
 
