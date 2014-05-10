@@ -149,15 +149,8 @@ public class Parser {
      */
     public void checkUrl(String url, final int lvl, UrlData parent) {
         // Мы пытаемся остановить?
-        Thread thread = Thread.currentThread();
-        if (thread instanceof OtherThread) {
-            if (((OtherThread) thread).isStop()) {
-                return;
-            }
-        } else if (thread instanceof MainThread) {
-            if (((MainThread) thread).isStop()) {
-                return;
-            }
+        if (isMustStop()) {
+            return;
         }
 
         // Убиваем последний слеш
@@ -236,6 +229,10 @@ public class Parser {
                             sb.append(element.text()).append("||");
                         }
                     }
+                    // Пытаемся остановиться?
+                    if (isMustStop()) {
+                        return;
+                    }
                     data.getContainsTag().put(tag, sb.toString());
                 }
 
@@ -244,6 +241,11 @@ public class Parser {
                 for (String containsTest : ParserFilter.searchList) {
                     int count = getCountIndexOf(html_data, containsTest);
                     data.getContainsText().put(containsTest, count);
+
+                    // Пытаемся остановиться?
+                    if (isMustStop()) {
+                        return;
+                    }
                 }
 
                 List<String> urls = getAbsUrls(response.parse(), punny, domain, lvl);
@@ -252,9 +254,13 @@ public class Parser {
                         queue.add(new UrlDataQ(_url, lvl + 1, data));
                     }
                 }
-                tableWorker.updateCountUrlInQueue(queue.size());
+                if(!isMustStop()) {
+                    tableWorker.updateCountUrlInQueue(queue.size());
+                }
             }
-            tableWorker.addRow(data);
+            if(!isMustStop()) {
+                tableWorker.addRow(data);
+            }
 
             // Добавляем в родителя ребёнка
             if (parent != null) {
@@ -262,14 +268,33 @@ public class Parser {
             }
 
         } catch (java.net.SocketTimeoutException exception) {
-            tableWorker.addRow(new vstu.gui.forms.main.UrlData(url, "timeout", lvl, "", "", 0, url, OptionsProperties.timeout));
+            if(!isMustStop()) {
+                tableWorker.addRow(new vstu.gui.forms.main.UrlData(url, "timeout", lvl, "", "", 0, url, OptionsProperties.timeout));
+            }
         } catch (UnknownHostException e) {
-            tableWorker.addRow(new vstu.gui.forms.main.UrlData(url, "unknown host", lvl, "", "", 0, url, -1));
+            if(!isMustStop()) {
+                tableWorker.addRow(new vstu.gui.forms.main.UrlData(url, "unknown host", lvl, "", "", 0, url, -1));
+            }
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println(url_punny);
         }
 
+    }
+
+    public boolean isMustStop() {
+        Thread thread = Thread.currentThread();
+        if (thread instanceof OtherThread) {
+            if (((OtherThread) thread).isStop()) {
+                return true;
+            }
+        } else if (thread instanceof MainThread) {
+            if (((MainThread) thread).isStop()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public List<String> getAbsUrls(Document doc, String punny, String originalDomain, int lvl) {
