@@ -11,6 +11,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
+import vstu.gui.data.OptionsProperties;
+import vstu.gui.forms.main.MainFormController;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,7 +24,7 @@ import java.util.List;
  */
 public class TableColumnOption {
 
-    public static void show(TableView tw) {
+    public static void show(TableView tw, final MainFormController mfc) {
         ObservableList<TableColumn> list = tw.getColumns();
 
         List<TableColumn> columns = new ArrayList<>();
@@ -40,6 +43,16 @@ public class TableColumnOption {
         stage.setMaxWidth(100);
         stage.setResizable(true);
         stage.initStyle(StageStyle.UTILITY);
+
+        // При закрытии сохраняем
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent windowEvent) {
+                OptionsProperties.visibleColumns = mfc.getDataString();
+                OptionsProperties.save();
+            }
+        });
+
         stage.show();
     }
 
@@ -74,5 +87,4 @@ public class TableColumnOption {
 
         return gridPane;
     }
-
 }

@@ -47,11 +47,15 @@ public class OptionsProperties {
      * Язык интерфейса программы
      */
     public static Language language = Language.ENGLISH;
-
     /**
      * Количество дополнительных поток (1 + это число), которые будут парсить страницу
      */
     public static int countThread;
+
+    /**
+     * Видимые колонки ввиде 0101010101111 - где 1-видно, 0-не видно
+     */
+    public static String visibleColumns = "1111111";
 
 
     private static final String FILE_NAME = "options.ini";
@@ -82,6 +86,7 @@ public class OptionsProperties {
         timeout = Integer.parseInt(properties.getProperty("timeout", "1000"));
         language = Language.valueOf(properties.getProperty("language", "ENGLISH"));
         countThread = Integer.parseInt(properties.getProperty("countThread", "20"));
+        visibleColumns = properties.getProperty("visibleColumns","1111111");
     }
 
     public static void save() {
@@ -99,6 +104,7 @@ public class OptionsProperties {
         properties.setProperty("timeout", Integer.toString(timeout));
         properties.setProperty("language", language.toString());
         properties.setProperty("countThread", Integer.toString(countThread));
+        properties.setProperty("visibleColumns",visibleColumns);
 
         try {
             properties.store(new FileOutputStream(f), "vstu xenu file options");

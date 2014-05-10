@@ -161,6 +161,71 @@ public class MainFormController implements ITableWorker {
 
         tableTW.getSelectionModel().setCellSelectionEnabled(true);
         tableTW.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+        String visible = OptionsProperties.visibleColumns;
+        if (visible.charAt(0) == '0') {
+            addressColumn.setVisible(false);
+        }
+        if (visible.charAt(1) == '0') {
+            statusColumn.setVisible(false);
+        }
+        if (visible.charAt(2) == '0') {
+            lvlColumn.setVisible(false);
+        }
+        if (visible.charAt(3) == '0') {
+            typeColumn.setVisible(false);
+        }
+        if (visible.charAt(4) == '0') {
+            charsetColumn.setVisible(false);
+        }
+        if (visible.charAt(5) == '0') {
+            sizeColumn.setVisible(false);
+        }
+        if (visible.charAt(6) == '0') {
+            timeLoad.setVisible(false);
+        }
+    }
+
+    public String getDataString() {
+        StringBuilder data = new StringBuilder();
+
+        if (!addressColumn.isVisible()) {
+            data.append("0");
+        } else {
+            data.append("1");
+        }
+        if (!statusColumn.isVisible()) {
+            data.append("0");
+        } else {
+            data.append("1");
+        }
+        if (!lvlColumn.isVisible()) {
+            data.append("0");
+        } else {
+            data.append("1");
+        }
+        if (!typeColumn.isVisible()) {
+            data.append("0");
+        } else {
+            data.append("1");
+        }
+        if (!charsetColumn.isVisible()) {
+            data.append("0");
+        } else {
+            data.append("1");
+        }
+        if (!sizeColumn.isVisible()) {
+            data.append("0");
+        } else {
+            data.append("1");
+        }
+        if (!timeLoad.isVisible()) {
+            data.append("0");
+        } else {
+            data.append("1");
+        }
+
+        return data.toString();
     }
 
     private class MContext implements EventHandler<MouseEvent> {
@@ -228,7 +293,7 @@ public class MainFormController implements ITableWorker {
         export.createResultDoc(dataTables, file);
     }
 
-    public void onSaveSitemapItemAction(){
+    public void onSaveSitemapItemAction() {
         // Если обработка завершена
 
         // Показать диалог для сохранения файла
@@ -486,7 +551,7 @@ public class MainFormController implements ITableWorker {
     }
 
     public void onColumnVisibleAction() {
-        TableColumnOption.show(tableTW);
+        TableColumnOption.show(tableTW, this);
     }
 
     private void onStop() {

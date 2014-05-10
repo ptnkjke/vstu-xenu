@@ -78,8 +78,8 @@
                     </children>
                 </HBox><TableView fx:id="includeUrlTable" prefHeight="200.0" prefWidth="200.0">
   <columns>
-    <TableColumn prefWidth="250.0" text="Value" />
-    <TableColumn prefWidth="122.0" text="Regexp" />
+    <TableColumn prefWidth="250.0" text="%parserfilter.value" />
+    <TableColumn prefWidth="122.0" text="%parserfilter.regexp" />
   </columns>
 <columnResizePolicy>
 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -108,8 +108,8 @@
                     </children>
                 </HBox><TableView fx:id="excludeUrlTable" prefHeight="200.0" prefWidth="200.0">
   <columns>
-    <TableColumn prefWidth="250.0" text="Value" />
-    <TableColumn prefWidth="122.0" text="Regexp" />
+    <TableColumn prefWidth="250.0" text="%parserfilter.value" />
+    <TableColumn prefWidth="122.0" text="%parserfilter.regexp" />
   </columns>
 <columnResizePolicy>
 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

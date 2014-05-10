@@ -21,11 +21,11 @@
 <children><MenuBar>
   <menus><Menu mnemonicParsing="false" text="%mainform.menubar.file">
   <items>
-    <MenuItem id="saveAsHtml" mnemonicParsing="false" onAction="#onSaveAsHtmlMenuItemAction" text="%mainform.menubar.file.saveashtml" /><MenuItem mnemonicParsing="false" onAction="#onSaveSitemapItemAction" text="Save sitemap" />
+    <MenuItem id="saveAsHtml" mnemonicParsing="false" onAction="#onSaveAsHtmlMenuItemAction" text="%mainform.menubar.file.saveashtml" /><MenuItem mnemonicParsing="false" onAction="#onSaveSitemapItemAction" text="%mainform.menubar.file.savesitemap" />
   </items>
 </Menu><Menu mnemonicParsing="false" text="%mainform.menubar.options">
   <items>
-    <MenuItem fx:id="preferencesMenuItem" mnemonicParsing="false" onAction="#onPreferencesMenuItemAction" text="%mainform.menubar.options.preferences" /><MenuItem mnemonicParsing="false" onAction="#onParserFilterItemAction" text="%mainform.menubar.options.parserfilters" /><MenuItem mnemonicParsing="false" onAction="#onColumnVisibleAction" text="Column visible" />
+    <MenuItem fx:id="preferencesMenuItem" mnemonicParsing="false" onAction="#onPreferencesMenuItemAction" text="%mainform.menubar.options.preferences" /><MenuItem mnemonicParsing="false" onAction="#onParserFilterItemAction" text="%mainform.menubar.options.parserfilters" /><MenuItem mnemonicParsing="false" onAction="#onColumnVisibleAction" text="%mainform.menubar.options.columnvisible" />
   </items>
 </Menu>
     <Menu mnemonicParsing="false" text="%mainform.menubar.help">
