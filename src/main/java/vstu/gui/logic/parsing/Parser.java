@@ -50,12 +50,19 @@ public class Parser {
      */
     private String mainUrl;
 
+    /**
+     * Главный домен
+     */
+    private String mainDomain;
+
     public void startCheck(String url) {
         if (!url.contains("http://")) {
             url = "http://" + url;
         }
 
         mainUrl = getMainUrl(url);
+        mainDomain = getDomain(url);
+
         /**
          * Пять потоков занимаются чеканьем
          */
@@ -184,8 +191,9 @@ public class Parser {
         // Домен
         String domain = getDomain(url);
 
-        if (OptionsProperties.movingSubDomain) {
-            // TODO: Поддомен?
+        // Переходы под поддоменам
+        if (!OptionsProperties.movingSubDomain && isSubDomain(mainDomain, domain)) {
+            return;
         }
 
 
@@ -254,11 +262,11 @@ public class Parser {
                         queue.add(new UrlDataQ(_url, lvl + 1, data));
                     }
                 }
-                if(!isMustStop()) {
+                if (!isMustStop()) {
                     tableWorker.updateCountUrlInQueue(queue.size());
                 }
             }
-            if(!isMustStop()) {
+            if (!isMustStop()) {
                 tableWorker.addRow(data);
             }
 
@@ -268,11 +276,11 @@ public class Parser {
             }
 
         } catch (java.net.SocketTimeoutException exception) {
-            if(!isMustStop()) {
+            if (!isMustStop()) {
                 tableWorker.addRow(new vstu.gui.forms.main.UrlData(url, "timeout", lvl, "", "", 0, url, OptionsProperties.timeout));
             }
         } catch (UnknownHostException e) {
-            if(!isMustStop()) {
+            if (!isMustStop()) {
                 tableWorker.addRow(new vstu.gui.forms.main.UrlData(url, "unknown host", lvl, "", "", 0, url, -1));
             }
         } catch (Exception e) {
@@ -409,7 +417,7 @@ public class Parser {
      * @param url
      * @return
      */
-    private static String getMainUrl(String url) {
+    private String getMainUrl(String url) {
         int startIndexof = url.indexOf("//");
         if (startIndexof == -1) {
             return "";
@@ -425,7 +433,7 @@ public class Parser {
 
     }
 
-    private static String toPunnyCode(String url) {
+    private String toPunnyCode(String url) {
         // Только домен нужно конвертировать
         String domain = getDomain(url);
         String punny = null;
@@ -442,8 +450,7 @@ public class Parser {
         }
     }
 
-
-    private static String getPunnyPart(String url) {
+    private String getPunnyPart(String url) {
         // Только домен нужно конвертировать
         String domain = getDomain(url);
         String punny = null;
@@ -457,7 +464,7 @@ public class Parser {
 
     }
 
-    private static String getDomain(String url) {
+    private String getDomain(String url) {
         int le = "http://".length();
         int start = url.indexOf("http://");
         int end = url.indexOf("/", le);
@@ -468,7 +475,7 @@ public class Parser {
         }
     }
 
-    private static int getCountIndexOf(String inner, String founder) {
+    private int getCountIndexOf(String inner, String founder) {
         int count = 0;
         int indexNext = 0;
         while (indexNext != -1) {
@@ -482,5 +489,31 @@ public class Parser {
         }
 
         return count;
+    }
+
+    /**
+     * Проверяем является ли domain поддоментом otherDomain
+     *
+     * @param domain
+     * @param otherDomain
+     * @return
+     */
+    private boolean isSubDomain(String domain, String otherDomain) {
+        if (otherDomain.equals(domain)) {
+            return false;
+        }
+
+        int pos_indexof = otherDomain.indexOf(domain);
+        int pos_dot = pos_indexof - 1;
+
+        if (pos_indexof != -1
+                && pos_dot != -1
+                && otherDomain.charAt(pos_dot) == '.'
+                && pos_indexof == (otherDomain.length() - domain.length())
+                ) {
+            return true;
+        }
+
+        return false;
     }
 }
