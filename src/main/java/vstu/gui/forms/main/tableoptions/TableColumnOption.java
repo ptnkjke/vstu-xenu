@@ -18,6 +18,7 @@ import vstu.gui.forms.main.MainFormController;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * Created by Lopatin on 27.04.2014.
@@ -42,6 +43,7 @@ public class TableColumnOption {
 
         stage.setMaxWidth(100);
         stage.setResizable(true);
+        //stage.setTitle(ResourceBundle.getBundle("translation").getString("title.columnvisible"));
         stage.initStyle(StageStyle.UTILITY);
 
         // При закрытии сохраняем

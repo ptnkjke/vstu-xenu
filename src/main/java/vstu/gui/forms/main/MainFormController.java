@@ -337,7 +337,7 @@ public class MainFormController implements ITableWorker {
         dialog.setResizable(false);
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.setScene(new Scene(root));
-        dialog.setTitle("Preferences");
+        dialog.setTitle(ResourceBundle.getBundle("translation").getString("title.prefereceform"));
 
         // Событие на закрытие окна
         dialog.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -371,7 +371,7 @@ public class MainFormController implements ITableWorker {
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.setScene(new Scene(root));
 
-        dialog.setTitle("Preferences");
+        dialog.setTitle(ResourceBundle.getBundle("translation").getString("title.filteroption"));
 
         final FXMLLoader finalFxmlLoader = fxmlLoader;
 
@@ -548,6 +548,33 @@ public class MainFormController implements ITableWorker {
         } else {
             onStop();
         }
+    }
+
+    public void onAboutAction() {
+        Parent root = null;
+        FXMLLoader fxmlLoader = null;
+        try {
+            fxmlLoader = new FXMLLoader();
+            fxmlLoader.setResources(ResourceBundle.getBundle("translation"));
+            fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
+
+            root = (Parent) fxmlLoader.load(getClass().getResource("/vstu/gui/forms/main/about/About.fxml").openStream());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        final Stage dialog = new Stage();
+        dialog.initStyle(StageStyle.UTILITY);
+        dialog.setResizable(false);
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.setScene(new Scene(root));
+
+        dialog.setTitle(ResourceBundle.getBundle("translation").getString("title.about"));
+
+        Label label = (Label)root.lookup("#textInfo");
+        label.setText("ptnkjke@gmail.com \nVSTU-XENU 1.3.2");
+        dialog.show();
     }
 
     public void onColumnVisibleAction() {

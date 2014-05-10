@@ -30,7 +30,7 @@
 </Menu>
     <Menu mnemonicParsing="false" text="%mainform.menubar.help">
       <items>
-        <MenuItem mnemonicParsing="false" text="%mainform.menubar.help.about" />
+        <MenuItem mnemonicParsing="false" onAction="#onAboutAction" text="%mainform.menubar.help.about" />
       </items>
     </Menu>
   </menus>
